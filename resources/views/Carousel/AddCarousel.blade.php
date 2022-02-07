@@ -76,10 +76,10 @@
                     </div>
 
                     <div class="mb-3 d-flex align-items-center">
-                        <label for="formFile" class="form-label  me-2">是否啟用</label>
+                        <label for="enable" class="form-label  me-2">是否啟用</label>
                         <div class="form-check-danger form-check form-switch mx-2 mb-1">
-                            <input class="form-check-input" type="checkbox" value="1" name="enable" id="enable" checked>
-                            <span class="form-check-label enable" for="enable">啟用</span>
+                            <input class="form-check-input" type="checkbox" value="" name="enable" id="enable" checked>
+                            <label class="form-check-label enable" for="enable">啟用</label>
                         </div>
                     </div>
                     @if ($errors->any())
@@ -118,14 +118,14 @@
         if ($('input#enable').is(":checked")) {
             // $('label.enable').val('啟用')
 
-            $('span.enable').html('啟用')
+            $('label.enable').html('啟用')
             // console.log($('label.enable'));
             // console.log('啟用');
         } else {
             // console.log($('label.enable'));
 
             // $('label.enable').val('未啟用')
-            $('span.enable').html('未啟用')
+            $('label.enable').html('未啟用')
 
             // console.log('未啟用');
 

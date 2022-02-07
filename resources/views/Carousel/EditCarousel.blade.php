@@ -79,7 +79,8 @@
                     <div class="mb-3 d-flex align-items-center">
                         <label for="formFile" class="form-label  me-2">是否啟用</label>
                         <div class="form-check-danger form-check form-switch mx-2 mb-1">
-                            <input class="form-check-input" type="checkbox" value="1" name="enable" id="enable" checked>
+                            <input class="form-check-input" type="checkbox" value="" name="enable" id="enable"
+                                @if($carousel->enable) checked @endif >
                             <span class="form-check-label enable" for="enable">啟用</span>
                         </div>
                     </div>
