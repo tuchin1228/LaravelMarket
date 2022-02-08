@@ -31,19 +31,30 @@
 </div>
 
 <div class=" my-3 bg-white p-2">
-    <div class="text-end border-bottom py-1">
+    <div class="d-flex justify-content-end align-items-center border-bottom py-1">
+        <select id="sizeSelect" class="form-select mx-2 w-auto " aria-label="Default select example">
+            <option @if ($type=='all' ) selected @endif>全部</option>
+            <option value="{{ route('RwdCarousel',['type'=>'desktop']) }}" @if ($type=='desktop' ) selected @endif>桌機
+            </option>
+            <option value="{{ route('RwdCarousel',['type'=>'phone']) }}" @if ($type=='phone' ) selected @endif>手機
+            </option>
+        </select>
         <a href="{{route('AddCarousel')}}" class="btn btn-primary">新增輪播</a>
     </div>
     <ul>
         @foreach ($carousels as $carousel)
         <li class="py-1 my-1 border-bottom d-flex align-items-start">
             <div class="me-2">
+                @if ($type == 'all')
                 <img src="./storage/Carousel/{{$carousel->filename}}" alt="">
+                @else
+                <img src="../storage/Carousel/{{$carousel->filename}}" alt="">
+                @endif
             </div>
             <div style="width: 100%">
-                <h5>{{$carousel->title}}<span class="fs-6 text-secondary">
-                        (@if ($carousel->title == 0) 桌機 @else 手機 @endif)</span></h5>
-                <h6><a href="{{$carousel->url}}" target="_blank">{{$carousel->url}}</a></h6>
+                <h5>{{$carousel->title}}<span class="fs-6 fw-bold text-secondary">
+                        (@if ($carousel->size == 0) 桌機 @else 手機 @endif)</span></h5>
+                <h6><a href="{{$carousel->url}}" target="_blank">連結</a></h6>
                 <h6 class="text-secondary">排序：{{$carousel->sort}}</h6>
                 <h6>
                     @if ($carousel->enable)
@@ -100,5 +111,17 @@
     </ul>
 </div>
 
+
+@endsection
+
+
+@section('script')
+<script>
+    $('#sizeSelect').change(function () {
+        // console.log($('#sizeSelect').val());
+        location.href = $('#sizeSelect').val()
+    })
+
+</script>
 
 @endsection

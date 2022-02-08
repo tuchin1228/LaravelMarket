@@ -10,10 +10,36 @@ class Carousel extends Controller
 {
     public function index()
     {
+
         $data['carousels'] = DB::table("carousels")
             ->orderBy('sort', 'desc')
             ->get();
+        $data['type'] = 'all';
         return view('Carousel.Carousel', $data);
+    }
+
+    public function rwd_index($type)
+    {
+        if ($type == 'phone') {
+
+            $data['carousels'] = DB::table("carousels")
+                ->where('size', 1)
+                ->orderBy('sort', 'desc')
+                ->get();
+            $data['type'] = 'phone';
+
+            return view('Carousel.Carousel', $data);
+
+        } else if ($type == 'desktop') {
+
+            $data['carousels'] = DB::table("carousels")
+                ->where('size', 0)
+                ->orderBy('sort', 'desc')
+                ->get();
+            $data['type'] = 'desktop';
+            return view('Carousel.Carousel', $data);
+        }
+        return redirect()->route('Carousel');
     }
 
     //新增輪播頁面

@@ -24,6 +24,9 @@ Route::prefix('Carousel')->group(function () {
     //顯示所有輪播
     Route::get('/', [Carousel::class, 'index'])->name('Carousel');
 
+    //顯示桌機輪播
+    // Route::get('/desktop', [Carousel::class, 'index'])->name('Carousel');
+
     //新增輪播頁面
     Route::get('/AddCarousel', [Carousel::class, 'add_index'])->name('AddCarousel');
 
@@ -38,5 +41,8 @@ Route::prefix('Carousel')->group(function () {
 
     //刪除輪播
     Route::post('/DeleteCarousel', [Carousel::class, 'delete_carousel'])->name('DeleteCarousel');
+
+    // 手機、桌機個別輪播
+    Route::get('/{type}', [Carousel::class, 'rwd_index'])->name('RwdCarousel');
 
 });
