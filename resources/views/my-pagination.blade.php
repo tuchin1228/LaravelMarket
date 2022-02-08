@@ -5,7 +5,7 @@
 
     .pagination a,
     .pagination span {
-        /* color: black; */
+        color: black;
         float: left;
         padding: 8px 16px;
         text-decoration: none;

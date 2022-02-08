@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {{-- <title>Document</title> --}}
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
     <!--favicon-->
     <link rel="icon" href="{{asset('assets/images/favicon-32x32.png')}}" type="image/png" />
     <!--plugins-->

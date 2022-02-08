@@ -137,7 +137,9 @@
             </div>
         </article>
         @endforeach
-        {{ $articles->links('my-pagination') }}
+        <div class="my-2">
+            {{ $articles->links('my-pagination') }}
+        </div>
     </div>
 </div>
 
