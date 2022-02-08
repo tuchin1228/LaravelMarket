@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Carousel;
+use App\Http\Controllers\News;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,5 +45,16 @@ Route::prefix('Carousel')->group(function () {
 
     // 手機、桌機個別輪播
     Route::get('/{type}', [Carousel::class, 'rwd_index'])->name('RwdCarousel');
+
+});
+
+// 最新消息
+Route::prefix('News')->group(function () {
+
+    //顯示所有最新消息
+    Route::get('/', [News::class, 'index'])->name('News');
+
+    //新增最新消息頁面
+    Route::get('/AddNews', [News::class, 'add_index'])->name('AddNews');
 
 });

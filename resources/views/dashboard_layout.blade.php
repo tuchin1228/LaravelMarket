@@ -47,6 +47,28 @@
             </div>
             <!--navigation-->
             <ul class="metismenu" id="menu">
+                <li class="menu-label">版型相關</li>
+                <li>
+                    <a href="{{route('Carousel')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">輪播設訂</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('AddCarousel')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">關於我們</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('News')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">最新消息</div>
+                    </a>
+                </li>
                 <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
@@ -83,14 +105,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu-label">UI Elements</li>
-                <li>
-                    <a href="widgets.html">
-                        <div class="parent-icon"><i class='bx bx-cookie'></i>
-                        </div>
-                        <div class="menu-title">Widgets</div>
-                    </a>
-                </li>
+
                 <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-cart'></i>
