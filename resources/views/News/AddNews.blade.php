@@ -11,7 +11,7 @@
     <div class="ps-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                <li class="breadcrumb-item"><a href="{{route('News')}}"><i class="bx bx-home-alt"></i></a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">新增最新消息</li>
             </ol>
@@ -21,17 +21,32 @@
 
 <div class=" my-3 bg-white p-2">
     <div class="">
-        <form class="w-3/5 mx-auto">
+        {{-- {!! Form::open(['route' => ['UploadNews'],'method' => 'post','enctype'=>'multipart/form-data','files' =>
+        true])
+        !!} --}}
+        <form class="w-3/5 mx-auto" method="POST" action="{{route('UploadNews')}}" enctype="multipart/form-data">
             @csrf
-            <input type="text" name="title" class="form-control my-2" required id="title" placeholder="標題">
-            <textarea id="mytextarea" name="content"></textarea>
+            <input type="text" name="title" class="form-control my-2" value="{{old('title')}}" required id="title"
+                placeholder="標題">
+            <textarea id="mytextarea" name="content">{{old('content')}}</textarea>
 
             <div class="my-3">
                 <label for="formFile" class="form-label">封面圖上傳</label>
-                <input class="form-control" name="formFile" type="file" id="formFile">
+                {{-- {!! Form::file('formFile', {{ old('formFile') }}, ['class'
+                =>'form-control','id'=>'formFile','name'=>'formFile','accept'=>'image/*']) !!} --}}
+                <input class="form-control" name="formFile" type="file" value="{{old('formFile')}}" id="formFile">
+
+            </div>
+            <div class=" my-2">
+                <label for="formFile" class="form-label">封面圖預覽</label><br>
+                <img src="" style="max-width: 200px" id="preview_image" alt="">
+            </div>
+            <input type="text" hidden name="article_id" value="">
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary px-5">確認新增</button>
             </div>
         </form>
-
+        {{-- {!! Form::close() !!} --}}
     </div>
 </div>
 @endsection
@@ -123,10 +138,23 @@
 
 <script>
     const article_id = Math.floor(Date.now() / 1000);
+    $("input[name='article_id']").val(article_id)
     const timestamp = new Date
     const date =
         `${timestamp.getFullYear()}-${(timestamp.getMonth()+1)>9?timestamp.getMonth()+1:'0'+ (timestamp.getMonth()+1)}-${timestamp.getDate()}`
     console.log(date);
+
+    $("input#formFile").change(function () {
+
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#preview_image").attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
     tinymce.init({
         selector: 'textarea',
         plugins: 'image code',

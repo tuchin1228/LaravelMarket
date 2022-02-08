@@ -57,4 +57,7 @@ Route::prefix('News')->group(function () {
     //新增最新消息頁面
     Route::get('/AddNews', [News::class, 'add_index'])->name('AddNews');
 
+    //新增最新消息
+    Route::post('/AddNews', [News::class, 'add_news'])->name('UploadNews');
+
 });
