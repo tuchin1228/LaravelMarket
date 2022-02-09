@@ -139,8 +139,9 @@
     referrerpolicy="origin"></script>
 
 <script>
-    const article_id = Math.floor(Date.now() / 1000);
-    $("input[name='article_id']").val(article_id)
+    // const article_id = Math.floor(Date.now() / 1000);
+    // $("input[name='article_id']").val(article_id)
+    let article_id = "{{$article_id}}";
     const timestamp = new Date
     const date =
         `${timestamp.getFullYear()}-${(timestamp.getMonth()+1)>9?timestamp.getMonth()+1:'0'+ (timestamp.getMonth()+1)}-${timestamp.getDate()}`
@@ -190,7 +191,7 @@
         // toolbar: 'undo redo | link image | code',
         image_title: true,
         // automatic_uploads: true,
-        images_upload_url: `../api/uploadimage/${article_id}/${date}`,
+        images_upload_url: `../../api/uploadimage/${article_id}/${date}`,
         file_picker_types: 'image',
         file_picker_callback: function (cb, value, meta) {
             console.log('file_picker_callback');
@@ -217,6 +218,7 @@
                         title: file.name
                     });
                     console.log('打api');
+                    console.log(`../api/uploadimage/${article_id}/${date}`);
 
                 };
 

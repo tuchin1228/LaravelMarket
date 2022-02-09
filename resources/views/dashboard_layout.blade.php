@@ -55,7 +55,7 @@
                     <a href="{{route('Carousel')}}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
-                        <div class="menu-title">輪播設訂</div>
+                        <div class="menu-title">輪播設定</div>
                     </a>
                 </li>
                 <li>
@@ -70,6 +70,22 @@
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">最新消息</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('ImageNone')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">圖片管理</div>
+                    </a>
+                </li>
+
+                <li class="menu-label">會員系統</li>
+                <li>
+                    <a href="{{route('User')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">會員管理</div>
                     </a>
                 </li>
                 <li>

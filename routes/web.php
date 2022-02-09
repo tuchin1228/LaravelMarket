@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Carousel;
 use App\Http\Controllers\News;
+use App\Http\Controllers\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,5 +69,19 @@ Route::prefix('News')->group(function () {
 
     //刪除最新消息
     Route::post('/DeleteNews', [News::class, 'delete_news'])->name('DeleteNews');
+
+    //最新消息無用圖片管理
+    Route::get('/imagenone', [News::class, 'imagenone'])->name('ImageNone');
+
+    //最新消息刪除無用圖片管理
+    Route::post('/deletenotuse', [News::class, 'deletenotuse'])->name('DeleteNotuse');
+
+});
+
+// 會員
+Route::prefix('User')->group(function () {
+
+    //顯示所有會員
+    Route::get('/', [User::class, 'index'])->name('User');
 
 });

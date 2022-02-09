@@ -37,7 +37,7 @@ class News extends Controller
     {
         if ($req->hasFile('file')) {
             $image = $req->file('file');
-            $file_path = $image->store('public/uploads');
+            $file_path = $image->store("public/uploads/$article_id");
             $filename = $image->hashName();
             DB::table('image_list')->insert([
                 'filename' => $filename,
@@ -45,7 +45,7 @@ class News extends Controller
                 'date' => $date,
             ]);
 
-            return ['location' => request()->getSchemeAndHttpHost() . "/storage/uploads/$filename"];
+            return ['location' => request()->getSchemeAndHttpHost() . "/storage/uploads/$article_id/$filename"];
 
         }
     }
@@ -124,5 +124,71 @@ class News extends Controller
 
         return redirect()->route('News');
 
+    }
+
+    public function imagenone()
+    {
+        //上傳後沒發布的圖片
+        $notitle_images = DB::select("SELECT image_list.* from image_list
+                            LEFT JOIN articles
+                              ON image_list.article_id = articles.article_id
+                            WHERE image_list.article_id
+                            NOT IN(SELECT article_id FROM articles)");
+
+        //更新傳圖未上傳 || 上傳後刪除 (文章內無顯示的圖)
+        $hastitle_images = DB::select("SELECT image_list.*,articles.title,articles.created_at  FROM image_list
+                              LEFT JOIN articles
+                              ON image_list.article_id = articles.article_id
+                              WHERE articles.content NOT LIKE CONCAT('%', image_list.filename, '%')");
+        return view('News.Imagenone', ['notitle_images' => $notitle_images, 'hastitle_images' => $hastitle_images]);
+
+    }
+
+    public function deletenotuse(Request $req)
+    {
+        if (!isset($req->type)) {
+            return redirect()->route('ImageNone');
+        }
+
+        if ($req->type == 1) {
+            $notitle_images = DB::select("SELECT image_list.* from image_list
+                            LEFT JOIN articles
+                              ON image_list.article_id = articles.article_id
+                            WHERE image_list.article_id
+                            NOT IN(SELECT article_id FROM articles)");
+            foreach ($notitle_images as $image) {
+                Storage::delete("/public/uploads/$image->article_id/$image->filename");
+                $fileInFolder = Storage::allFiles("/public/uploads/$image->article_id/$image->filename");
+                if (empty($fileInFolder)) {
+                    Storage::deleteDirectory("/public/uploads/$image->article_id");
+                }
+
+                DB::table('image_list')
+                    ->where('article_id', $image->article_id)
+                    ->where('filename', $image->filename)
+                    ->delete();
+            }
+            return redirect()->route('ImageNone');
+
+        } else {
+            $hastitle_images = DB::select("SELECT image_list.*,articles.title,articles.created_at FROM image_list
+                              LEFT JOIN articles
+                              ON image_list.article_id = articles.article_id
+                              WHERE articles.content NOT LIKE CONCAT('%', image_list.filename, '%')");
+            foreach ($hastitle_images as $image) {
+                Storage::delete("/public/uploads/$image->article_id/$image->filename");
+                $fileInFolder = Storage::allFiles("/public/uploads/$image->article_id/$image->filename");
+                if (empty($fileInFolder)) {
+                    Storage::deleteDirectory("/public/uploads/$image->article_id");
+                }
+
+                DB::table('image_list')
+                    ->where('article_id', $image->article_id)
+                    ->where('filename', $image->filename)
+                    ->delete();
+            }
+            return redirect()->route('ImageNone');
+
+        }
     }
 }
