@@ -126,14 +126,48 @@
     <div>
         @foreach ($articles as $article)
         <article class="py-2 border-bottom d-flex align-items-start">
-            <img style="max-width:200px;" onclick="LargeImage('{{$article->id}}')" class="img{{$article->id}} me-2"
+            <img style="max-width:200px;" onclick="LargeImage('{{$article->article_id}}')"
+                class="img{{$article->article_id}} me-2"
                 src="./storage/news/{{$article->article_id}}/{{$article->banner}}" alt="">
-            <div class="article_content">
-                <h2 class="fs-5 fw-bolder">{{$article->title}}</h2>
-                <p class="text-secondary" style=" text-overflow: ellipsis;
+            <div class="article_content" style="width: 100%">
+                <div>
+                    <h2 class="fs-5 fw-bolder">{{$article->title}}</h2>
+                    <p class="text-secondary my-1">建立日期：{{$article->created_at}}</p>
+                    <p class="text-secondary" style=" text-overflow: ellipsis;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;-webkit-box-orient: vertical;
                 overflow: hidden; "> {!! strip_tags($article->content,'') !!}</p>
+                </div>
+                <div class="text-end">
+                    <a href="{{route('EditNews',['article_id'=>$article->article_id])}}" class="btn btn-warning"
+                        type="button">編輯</a>
+                    <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal{{$article->article_id}}">刪除</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal{{$article->article_id}}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">確認刪除</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">刪除後將無法復原
+                                </div>
+                                <form action="{{route('DeleteNews')}}" method="POST">
+                                    @csrf
+                                    <input type="text" hidden name="banner" value="{{$article->banner}}">
+                                    <input type="text" hidden name="deleteId" value="{{$article->article_id}}">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">取消</button>
+                                        <button type="submit" class="btn btn-danger">刪除</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </article>
         @endforeach
@@ -155,10 +189,10 @@
     let modal = document.getElementById("imgModal");
     let modalImg = document.getElementById("imgbox");
 
-    function LargeImage(id) {
-        // let target = document.getElementsByClassName("img" + id);
+    function LargeImage(article_id) {
+        // let target = document.getElementsByClassName("img" + article_id);
         // console.log(target.getAttribute('src'));
-        let atti = $('.img' + id).attr('src');
+        let atti = $('.img' + article_id).attr('src');
         console.log(atti);
         modal.style.display = "block";
         modalImg.src = atti;

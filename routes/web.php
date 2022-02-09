@@ -57,7 +57,16 @@ Route::prefix('News')->group(function () {
     //新增最新消息頁面
     Route::get('/AddNews', [News::class, 'add_index'])->name('AddNews');
 
+    //編輯最新消息頁面
+    Route::get('/{article_id}/edit', [News::class, 'edit_news'])->name('EditNews');
+
     //新增最新消息
     Route::post('/AddNews', [News::class, 'add_news'])->name('UploadNews');
+
+    //編輯最新消息
+    Route::post('/news/edit', [News::class, 'update_news'])->name('UpdateNews');
+
+    //刪除最新消息
+    Route::post('/DeleteNews', [News::class, 'delete_news'])->name('DeleteNews');
 
 });

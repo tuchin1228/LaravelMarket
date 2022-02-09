@@ -77,7 +77,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">刪除後將無法復原
+                                <div class="modal-body text-center">刪除後將無法復原
                                 </div>
                                 <form action="{{route('DeleteCarousel')}}" method="POST">
                                     @csrf
