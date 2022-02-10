@@ -84,4 +84,13 @@ Route::prefix('User')->group(function () {
     //顯示所有會員
     Route::get('/', [User::class, 'index'])->name('User');
 
+    //編輯會員頁面
+    Route::get('/{userId}/edit', [User::class, 'edit_index'])->name('EditUser');
+
+    //編輯會員
+    Route::post('/edit', [User::class, 'edit_user'])->name('UpdateUser');
+
+    //刪除會員
+    Route::post('/delete', [User::class, 'delete_user'])->name('DeleteUser');
+
 });
