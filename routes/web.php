@@ -93,4 +93,7 @@ Route::prefix('User')->group(function () {
     //刪除會員
     Route::post('/delete', [User::class, 'delete_user'])->name('DeleteUser');
 
+    //搜尋會員
+    Route::get('/search/{keyword}', [User::class, 'search_user'])->name('SearchUser');
+
 });

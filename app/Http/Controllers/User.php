@@ -10,7 +10,7 @@ class User extends Controller
     public function index()
     {
         $data['Users'] = DB::table('User')
-            ->orderBy('created_at', 'desc')->paginate(5);
+            ->orderBy('created_at', 'desc')->paginate(20);
         return view('User.User', $data);
     }
 
@@ -49,6 +49,20 @@ class User extends Controller
             ->where('id', $req->deleteId)
             ->delete();
         return redirect()->route('User');
+
+    }
+
+    public function search_user($keyword)
+    {
+        if (empty($keyword)) {
+            return redirect()->back();
+        }
+        $data['Users'] = DB::table("user")
+            ->where('name', 'LIKE', '%' . $keyword . '%')
+            ->orwhere('phone', 'LIKE', '%' . $keyword . '%')
+            ->orwhere('email', 'LIKE', '%' . $keyword . '%')
+            ->paginate(20);
+        return view('User.User', $data);
 
     }
 }
