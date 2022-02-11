@@ -101,6 +101,10 @@
         }
     }
 
+    .modal-body img {
+        width: 100%;
+    }
+
 </style>
 
 @endsection
@@ -139,6 +143,8 @@
                 overflow: hidden; "> {!! strip_tags($article->content,'') !!}</p>
                 </div>
                 <div class="text-end">
+                    <button class="btn btn-success" type="button" data-bs-toggle="modal"
+                        data-bs-target="#articleModal{{$article->article_id}}">查看</button>
                     <a href="{{route('EditNews',['article_id'=>$article->article_id])}}" class="btn btn-warning"
                         type="button">編輯</a>
                     <button class="btn btn-danger" type="button" data-bs-toggle="modal"
@@ -167,6 +173,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal fade" id="articleModal{{$article->article_id}}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">{{$article->title}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    {!! $article->content !!}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </article>
@@ -177,7 +198,7 @@
     </div>
 </div>
 
-<div id="imgModal" class="modal">
+<div id="imgModal" style="z-index: 1200" class="modal">
     <span class="close">&times;</span>
     <img class="modalContent" id="imgbox">
     <div id="caption"></div>
@@ -188,24 +209,46 @@
 <script>
     let modal = document.getElementById("imgModal");
     let modalImg = document.getElementById("imgbox");
+    const img = document.getElementsByTagName("img");
 
-    function LargeImage(article_id) {
-        // let target = document.getElementsByClassName("img" + article_id);
-        // console.log(target.getAttribute('src'));
-        let atti = $('.img' + article_id).attr('src');
-        console.log(atti);
-        modal.style.display = "block";
-        modalImg.src = atti;
+    // function LargeImage(article_id) {
+    //     // let target = document.getElementsByClassName("img" + article_id);
+    //     // console.log(target.getAttribute('src'));
+    //     let atti = $('.img' + article_id).attr('src');
+    //     console.log(atti);
+    //     modal.style.display = "block";
+    //     modalImg.src = atti;
+    // }
+
+    // $('.close').on('click', function () {
+    //     modal.style.display = "none";
+    //     modalImg.src = ''
+    // })
+    // $('.modal').on('click', function () {
+    //     modal.style.display = "none";
+    //     modalImg.src = ''
+    // })
+
+    for (var a = 0; a < img.length; a++) {
+        img[a].addEventListener("click", function (el) {
+            modal.style.display = "block";
+            modalImg.src = this.getAttribute('src');
+        }, false)
     }
 
-    $('.close').on('click', function () {
+    function changeImage(el) {
+        el = el.target;
+        el.setAttribute("src", "someimage");
+    }
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
         modal.style.display = "none";
         modalImg.src = ''
-    })
-    $('.modal').on('click', function () {
+    }
+    modal.onclick = function () {
         modal.style.display = "none";
         modalImg.src = ''
-    })
+    }
 
 </script>
 @endsection
