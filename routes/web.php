@@ -61,14 +61,29 @@ Route::prefix('News')->group(function () {
     //編輯最新消息頁面
     Route::get('/{article_id}/edit', [News::class, 'edit_news'])->name('EditNews');
 
+    //最新消息分類頁面
+    Route::get('/category', [News::class, 'category_news'])->name('CategoryNews');
+
+    //新增最新消息分類頁面
+    Route::get('/category/add', [News::class, 'category_add'])->name('CategoryAdd');
+
     //新增最新消息
     Route::post('/AddNews', [News::class, 'add_news'])->name('UploadNews');
+
+    //新增最新消息分類
+    Route::post('/AddCategory', [News::class, 'add_category'])->name('AddCategory');
 
     //編輯最新消息
     Route::post('/news/edit', [News::class, 'update_news'])->name('UpdateNews');
 
+    //編輯最新消息分類
+    Route::post('/category/edit', [News::class, 'category_update'])->name('CategoryUpdate');
+
     //刪除最新消息
     Route::post('/DeleteNews', [News::class, 'delete_news'])->name('DeleteNews');
+
+    //刪除最新消息分類
+    Route::post('/category/delete', [News::class, 'category_delete'])->name('CategoryDelete');
 
     //最新消息無用圖片管理
     Route::get('/imagenone', [News::class, 'imagenone'])->name('ImageNone');

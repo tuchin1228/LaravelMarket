@@ -65,11 +65,19 @@
                         <div class="menu-title">關於我們</div>
                     </a>
                 </li>
+                <li class="menu-label">最新公告相關</li>
                 <li>
                     <a href="{{route('News')}}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">最新消息</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('CategoryNews')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">最新消息分類管理</div>
                     </a>
                 </li>
                 <li>
@@ -88,6 +96,7 @@
                         <div class="menu-title">會員管理</div>
                     </a>
                 </li>
+                <li class="menu-label">賣場相關</li>
                 <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>

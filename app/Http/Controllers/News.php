@@ -11,6 +11,7 @@ class News extends Controller
     public function index()
     {
         $data['articles'] = DB::table('articles')
+            ->leftJoin('articles_category', 'articles.cateId', '=', 'articles_category.id')
             ->orderBy('created_at', 'desc')->paginate(5);
         return view('News.News', $data);
     }
@@ -191,4 +192,72 @@ class News extends Controller
 
         }
     }
+
+    public function category_news()
+    {
+        $data['categories'] = DB::select("SELECT * FROM articles_category
+                                          ORDER BY articles_cate_sort desc");
+        return view('News.Category', $data);
+    }
+
+    public function category_add()
+    {
+        return view('News.AddCategory');
+    }
+
+    public function add_category(Request $req)
+    {
+        // return $req;
+        if (empty($req->title)) {
+            return redirect()->route('CategoryAdd')->withInput()->withErrors(['AddError' => '未輸入分類名稱']);
+        }
+
+        DB::table('articles_category')
+            ->insert([
+                'articles_cate_title' => $req->title,
+                'articles_cate_sort' => $req->sort,
+                'enable' => $req->enable,
+            ]);
+
+        return redirect()->route('CategoryNews');
+
+    }
+
+    public function category_update(Request $req)
+    {
+        // return $req;
+        if (empty($req->title)) {
+            return redirect()->route('CategoryNews')->withInput()->withErrors(['updateError' => '未輸入分類名稱', 'editId' => $req->editId]);
+        }
+        DB::table('articles_category')
+            ->where('id', $req->editId)
+            ->update([
+                'articles_cate_title' => $req->title,
+                'articles_cate_sort' => $req->sort,
+                'enable' => $req->enable,
+            ]);
+        return redirect()->route('CategoryNews');
+
+    }
+
+    public function category_delete(Request $req)
+    {
+        if (empty($req->deleteId)) {
+            return redirect()->route('CategoryNews');
+        }
+        $deleteId = $req->deleteId;
+        $exitNews = DB::select("SELECT * FROM articles
+                    WHERE cateId =  '$deleteId'");
+        if (!empty($exitNews)) {
+            //分類尚有文章不能刪
+            return redirect()->route('CategoryNews')->withInput()->withErrors(['deleteError' => '分類尚有貼文無法刪除']);
+        } else {
+            DB::table('articles_category')
+                ->where('id', $deleteId)
+                ->delete();
+        }
+        return redirect()->route('CategoryNews');
+
+    }
+
 }

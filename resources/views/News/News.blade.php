@@ -135,7 +135,7 @@
                 src="./storage/news/{{$article->article_id}}/{{$article->banner}}" alt="">
             <div class="article_content" style="width: 100%">
                 <div>
-                    <h2 class="fs-5 fw-bolder">{{$article->title}}</h2>
+                    <h2 class="fs-5 fw-bolder">【{{$article->articles_cate_title}}】{{$article->title}}</h2>
                     <p class="text-secondary my-1">建立日期：{{$article->created_at}}</p>
                     <p class="text-secondary" style=" text-overflow: ellipsis;
                 display: -webkit-box;
