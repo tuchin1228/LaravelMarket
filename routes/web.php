@@ -91,6 +91,9 @@ Route::prefix('News')->group(function () {
     //最新消息刪除無用圖片管理
     Route::post('/deletenotuse', [News::class, 'deletenotuse'])->name('DeleteNotuse');
 
+    //顯示某分類最新消息
+    Route::get('/{cateId}', [News::class, 'cate_index'])->name('CategoryOfNews');
+
 });
 
 // 會員

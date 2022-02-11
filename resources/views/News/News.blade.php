@@ -125,6 +125,21 @@
 
 <div class=" my-3 bg-white p-2">
     <div class="d-flex justify-content-end align-items-center border-bottom py-1">
+        <select id="cateSelect" class="form-select mx-2 w-auto " aria-label="Default select example">
+            <option value="all" @if ($cateId=='all' ) selected @endif>全部</option>
+            @foreach ($category as $cate)
+            <option value="{{ route('CategoryOfNews',['cateId'=>$cate->id]) }}" @if ($cateId==$cate->id ) selected
+                @endif>
+                {{$cate->articles_cate_title}}
+            </option>
+            @endforeach
+            {{-- <option value="{{ route('CategoryOfNews',['cateId'=>'desktop']) }}" @if ($type=='desktop' ) selected
+            @endif>
+            桌機
+            </option>
+            <option value="{{ route('CategoryOfNews',['cateId'=>'phone']) }}" @if ($type=='phone' ) selected @endif>手機
+            </option> --}}
+        </select>
         <a href="{{route('AddNews')}}" class="btn btn-primary">新增消息</a>
     </div>
     <div>
@@ -249,6 +264,11 @@
         modal.style.display = "none";
         modalImg.src = ''
     }
+
+    $('#cateSelect').change(function () {
+        // console.log($('#sizeSelect').val());
+        location.href = $('#cateSelect').val()
+    })
 
 </script>
 @endsection

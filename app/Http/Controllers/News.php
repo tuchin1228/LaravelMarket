@@ -10,14 +10,34 @@ class News extends Controller
 {
     public function index()
     {
+        $data['category'] = DB::table('articles_category')
+            ->orderBy('articles_cate_sort', 'desc')->get();
         $data['articles'] = DB::table('articles')
             ->leftJoin('articles_category', 'articles.cateId', '=', 'articles_category.id')
             ->orderBy('created_at', 'desc')->paginate(5);
+        $data['cateId'] = 'all';
+        return view('News.News', $data);
+    }
+
+    //顯示某分類最新消息
+    public function cate_index($cateId)
+    {
+        if ($cateId == 'all') {
+            return redirect()->route('News');
+        }
+        $data['category'] = DB::table('articles_category')
+            ->orderBy('articles_cate_sort', 'desc')->get();
+        $data['articles'] = DB::table('articles')
+            ->leftJoin('articles_category', 'articles.cateId', '=', 'articles_category.id')
+            ->where('articles.cateId', $cateId)
+            ->orderBy('created_at', 'desc')->paginate(5);
+        $data['cateId'] = $cateId;
         return view('News.News', $data);
     }
 
     public function add_index()
     {
+
         return view('News.AddNews');
     }
 
