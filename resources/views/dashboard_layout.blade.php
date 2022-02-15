@@ -98,6 +98,13 @@
                 </li>
                 <li class="menu-label">賣場相關</li>
                 <li>
+                    <a href="{{route('ProductCategory')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">商品類別管理</div>
+                    </a>
+                </li>
+                <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
                         </div>

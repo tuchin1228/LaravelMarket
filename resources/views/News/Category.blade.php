@@ -52,13 +52,8 @@
                     <button type="button" class="btn btn-warning" onclick="OpenModal({{$category->id}})">編輯</button>
 
                     <div class="cateControl categoryModal{{$category->id}} @if ($errors->has('updateError') && $category->id==$errors->first('editId')) @else d-none @endif"
-                        style="width:98%;max-width:500px;position:fixed;
+                        style="width:98%;max-width:500px;position:fixed;z-index: 1050;
                       top:50%;left:50%;transform:translate(-50%,-50%);">
-                        {{-- <div class="bg"
-                            style="position: fixed;top:0;left:0;width:100vw;height:100vh;background:rgb(55, 55 ,55 , 0.59)">
-                        </div> --}}
-                        {{-- <div class="modal fade" id="editModal{{$category->id}}" tabindex="-1"
-                        aria-hidden="true">--}}
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -79,24 +74,23 @@
                                                 value="{{old('sort') ? old('sort') : $category->articles_cate_sort}}">
                                         </div>
                                         <div class="my-2">
-                                            <label for="enable"><input type="radio" id="enable" name="enable"
-                                                    @if($category->enable ==1)
+                                            <label for="enable{{$category->id}}"><input type="radio"
+                                                    id="enable{{$category->id}}" name="enable" @if($category->enable
+                                                ==1)
                                                 checked
                                                 @elseif(empty(old('enable')) && $category->enable ==1)
                                                 checked
                                                 @endif
                                                 value="1">
                                                 啟用</label>
-                                            <label for="no_enable"><input type="radio" id="no_enable" name="enable"
+                                            <label for="no_enable{{$category->id}}"><input type="radio"
+                                                    id="no_enable{{$category->id}}" name="enable"
                                                     @if(empty($category->enable) || (!empty(old('enable')) &&
                                                 old('enable')==0))
                                                 checked
                                                 @endif
                                                 value="0">
                                                 關閉</label>
-                                            {{-- <label for="">啟用</label> <input type="text" name="sort" class="text-center"
-                                                value="{{old('sort') ? old('sort') : $category->articles_cate_sort}}">
-                                            --}}
                                         </div>
                                     </div>
                                     @if ($errors->has('updateError') &&
@@ -143,10 +137,14 @@
             </tr>
             @endforeach
         </table>
+
     </div>
 </div>
-
+<div class="bg d-none" onclick="CloseModal()"
+    style="z-index: 1000;position: fixed;top:0;left:0;width:100vw;height:100vh;background:rgb(55, 55 ,55 , 0.59)">
+</div>
 @endsection
+
 
 
 @section('script')
@@ -159,16 +157,25 @@
 }
 @endif
 <script>
+    let currentId = ''
+
     function OpenModal(id) {
+        currentId = id;
         $('.cateControl').addClass('d-none')
+        $('.bg').removeClass('d-none')
         console.log('test');
         $(`.categoryModal${id}`).removeClass('d-none')
     }
 
     function CloseModal(id) {
+        $('.bg').addClass('d-none')
 
         console.log('test');
-        $(`.categoryModal${id}`).addClass('d-none')
+        if (id) {
+            $(`.categoryModal${id}`).addClass('d-none')
+        } else {
+            $(`.categoryModal${currentId}`).addClass('d-none')
+        }
     }
 
 </script>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Carousel;
 use App\Http\Controllers\News;
+use App\Http\Controllers\Product;
 use App\Http\Controllers\User;
 use Illuminate\Support\Facades\Route;
 
@@ -113,5 +114,25 @@ Route::prefix('User')->group(function () {
 
     //搜尋會員
     Route::get('/search/{keyword}', [User::class, 'search_user'])->name('SearchUser');
+
+});
+
+// 商品
+Route::prefix('Product')->group(function () {
+
+    //顯示所有商品分類頁面
+    Route::get('/', [Product::class, 'product_category'])->name('ProductCategory');
+
+    //新增商品分類頁面
+    Route::get('/addCategory', [Product::class, 'product_category_add_page'])->name('ProductCategoryAddPage');
+
+    //新增商品分類
+    Route::post('/addCategory', [Product::class, 'product_category_add'])->name('ProductCategoryAdd');
+
+    //編輯商品分類
+    Route::post('/editCategory', [Product::class, 'product_category_edit'])->name('ProductCategoryEdit');
+
+    //刪除商品分類
+    Route::post('/deleteCategory', [Product::class, 'product_category_delete'])->name('ProductCategoryDelete');
 
 });
