@@ -105,6 +105,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('ProductTag')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">商品標籤管理</div>
+                    </a>
+                </li>
+                <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
                         </div>

@@ -21,6 +21,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 後台
+Route::get('/backend', function () {
+    return view('dashboard_layout');
+});
+
 // 輪播
 Route::prefix('Carousel')->group(function () {
 
@@ -121,7 +126,7 @@ Route::prefix('User')->group(function () {
 Route::prefix('Product')->group(function () {
 
     //顯示所有商品分類頁面
-    Route::get('/', [Product::class, 'product_category'])->name('ProductCategory');
+    Route::get('/category', [Product::class, 'product_category'])->name('ProductCategory');
 
     //新增商品分類頁面
     Route::get('/addCategory', [Product::class, 'product_category_add_page'])->name('ProductCategoryAddPage');
@@ -134,5 +139,22 @@ Route::prefix('Product')->group(function () {
 
     //刪除商品分類
     Route::post('/deleteCategory', [Product::class, 'product_category_delete'])->name('ProductCategoryDelete');
+
+    /************************************/
+
+    //顯示所有標籤頁面
+    Route::get('/tag', [Product::class, 'product_tag'])->name('ProductTag');
+
+    //新增商品標籤頁面
+    Route::get('/addTag', [Product::class, 'product_tag_add_page'])->name('ProductTagAddPage');
+
+    //新增商品標籤
+    Route::post('/addTag', [Product::class, 'product_tag_add'])->name('ProductTagAdd');
+
+    //編輯商品標籤
+    Route::post('/editTag', [Product::class, 'product_tag_edit'])->name('ProductTagEdit');
+
+    //刪除商品標籤
+    Route::post('/deleteTag', [Product::class, 'product_tag_delete'])->name('ProductTagDelete');
 
 });
