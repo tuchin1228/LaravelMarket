@@ -33,7 +33,7 @@
 <div class=" my-3 bg-white p-2">
     <div class="d-flex justify-content-end align-items-center border-bottom py-1">
         <select id="sizeSelect" class="form-select mx-2 w-auto " aria-label="Default select example">
-            <option @if ($type=='all' ) selected @endif>全部</option>
+            <option value="{{route('Carousel')}}">全部</option>
             <option value="{{ route('RwdCarousel',['type'=>'desktop']) }}" @if ($type=='desktop' ) selected @endif>桌機
             </option>
             <option value="{{ route('RwdCarousel',['type'=>'phone']) }}" @if ($type=='phone' ) selected @endif>手機
@@ -117,6 +117,17 @@
 
 @section('script')
 <script>
+    $(document).ready(function () {
+        let typeValue = '{{$type}}';
+        if (typeValue == 'all') {
+            $('#sizeSelect').val("{{route('Carousel')}}")
+        } else {
+            let url = "{{ route('RwdCarousel',['type'=>':typeValue']) }}"
+            url = url.replace(':typeValue', typeValue);
+            $('#sizeSelect').val(url)
+        }
+    })
+
     $('#sizeSelect').change(function () {
         // console.log($('#sizeSelect').val());
         location.href = $('#sizeSelect').val()

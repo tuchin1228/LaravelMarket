@@ -157,4 +157,15 @@ Route::prefix('Product')->group(function () {
     //刪除商品標籤
     Route::post('/deleteTag', [Product::class, 'product_tag_delete'])->name('ProductTagDelete');
 
+    /************************************/
+
+    //顯示分類產品頁面
+    Route::get('/{category}', [Product::class, 'product'])->name('CategoryProduct');
+
+    //顯示搜尋結果產品頁面
+    Route::get('/search/{keyword}', [Product::class, 'search_product'])->name('SearchProduct');
+
+    //顯示所有產品頁面
+    Route::get('/', [Product::class, 'product'])->name('AllProduct');
+
 });

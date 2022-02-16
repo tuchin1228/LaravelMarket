@@ -112,6 +112,21 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('AllProduct')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">所有商品</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">運費管理</div>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
                         </div>

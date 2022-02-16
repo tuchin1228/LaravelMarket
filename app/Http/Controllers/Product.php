@@ -147,4 +147,41 @@ class Product extends Controller
         return redirect()->route('ProductTag');
 
     }
+
+    /**************** 商品 ***************/
+
+    public function product($category = null)
+    {
+        $data['categories'] = DB::select("SELECT * FROM product_category");
+
+        if (empty($category)) {
+            $data['selectCategory'] = 'all';
+            $data['products'] = DB::table("product")
+                ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')->orderBY('product.id')->paginate(5);
+        } else {
+            $data['selectCategory'] = $category;
+            $data['products'] = DB::table("product")->where('productCateId', $category)
+                ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')->orderBY('product.id')->paginate(5);
+
+        }
+
+        return view('Product.Product', $data);
+    }
+
+    public function search_product($keyword)
+    {
+        $data['categories'] = DB::select("SELECT * FROM product_category");
+
+        $data['selectCategory'] = 'all';
+
+        $data['products'] = DB::table("product")
+            ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')->orderBY('product.id')
+            ->where('product.productName', 'LIKE', '%' . $keyword . '%')
+            ->paginate(20);
+
+        $data['keyword'] = $keyword;
+
+        return view('Product.Product', $data);
+
+    }
 }

@@ -126,19 +126,12 @@
 <div class=" my-3 bg-white p-2">
     <div class="d-flex justify-content-end align-items-center border-bottom py-1">
         <select id="cateSelect" class="form-select mx-2 w-auto " aria-label="Default select example">
-            <option value="all" @if ($cateId=='all' ) selected @endif>全部</option>
+            <option value="{{ route('News') }}">全部</option>
             @foreach ($category as $cate)
-            <option value="{{ route('CategoryOfNews',['cateId'=>$cate->id]) }}" @if ($cateId==$cate->id ) selected
-                @endif>
+            <option value="{{ route('CategoryOfNews',['cateId'=>$cate->id]) }}">
                 {{$cate->articles_cate_title}}
             </option>
             @endforeach
-            {{-- <option value="{{ route('CategoryOfNews',['cateId'=>'desktop']) }}" @if ($type=='desktop' ) selected
-            @endif>
-            桌機
-            </option>
-            <option value="{{ route('CategoryOfNews',['cateId'=>'phone']) }}" @if ($type=='phone' ) selected @endif>手機
-            </option> --}}
         </select>
         <a href="{{route('AddNews')}}" class="btn btn-primary">新增消息</a>
     </div>
@@ -264,6 +257,18 @@
         modal.style.display = "none";
         modalImg.src = ''
     }
+
+    $(document).ready(function () {
+        let cateValue = '{{$cateId}}';
+        if (cateValue == 'all') {
+            $('#cateSelect').val("{{route('News')}}")
+        } else {
+            let url = "{{ route('CategoryOfNews',['cateId'=>':cateValue']) }}"
+            url = url.replace(':cateValue', cateValue);
+            $('#cateSelect').val(url)
+        }
+    })
+
 
     $('#cateSelect').change(function () {
         // console.log($('#sizeSelect').val());
