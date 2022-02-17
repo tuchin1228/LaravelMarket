@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Controller
 {
@@ -157,11 +158,17 @@ class Product extends Controller
         if (empty($category)) {
             $data['selectCategory'] = 'all';
             $data['products'] = DB::table("product")
-                ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')->orderBY('product.id')->paginate(5);
+                ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')
+                ->select("product.*", "product_category.productCateName")
+                ->orderBY('product.sort', 'desc')->orderBy('product.id', 'desc')
+                ->paginate(5);
         } else {
             $data['selectCategory'] = $category;
             $data['products'] = DB::table("product")->where('productCateId', $category)
-                ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')->orderBY('product.id')->paginate(5);
+                ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')
+                ->select("product.*", "product_category.productCateName")
+                ->orderBY('product.sort', 'desc')->orderBy('product.id', 'desc')
+                ->paginate(5);
 
         }
 
@@ -175,13 +182,165 @@ class Product extends Controller
         $data['selectCategory'] = 'all';
 
         $data['products'] = DB::table("product")
-            ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')->orderBY('product.id')
+            ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')
+            ->select("product.*", "product_category.productCateName")
+            ->orderBY('product.sort', 'desc')->orderBy('product.id', 'desc')
             ->where('product.productName', 'LIKE', '%' . $keyword . '%')
+
             ->paginate(20);
 
         $data['keyword'] = $keyword;
 
         return view('Product.Product', $data);
 
+    }
+
+    public function product_delete(Request $req)
+    {
+        if (empty($req->deleteId)) {
+            return redirect()->back();
+        }
+
+        $deleteId = $req->deleteId;
+
+        DB::table('product_detail')
+            ->where('productId', $deleteId)
+            ->delete();
+        DB::table('product')
+            ->where('productId', $deleteId)
+            ->delete();
+
+        return redirect()->back();
+
+    }
+
+    public function product_create_page()
+    {
+
+        $data['tags'] = DB::select("SELECT * FROM product_tag");
+
+        $data['categories'] = DB::select("SELECT * FROM product_category");
+
+        return view('Product.CreateProduct', $data);
+    }
+
+    public function product_create(Request $req)
+    {
+        // return $req;
+        $data['productId'] = $req->productId;
+        $data['productName'] = $req->productName;
+        $data['productCateId'] = $req->productCateId;
+        $data['productTag'] = $req->productTag;
+        $data['productIntro'] = $req->productIntro;
+        $data['sort'] = $req->sort;
+        $data['enable'] = $req->enable;
+        $data['description'] = $req->description;
+        $data['composition'] = $req->composition;
+        $data['buyflow'] = $req->buyflow;
+
+        DB::table('product')
+            ->insert($data);
+
+        return redirect()->route('AllProduct');
+
+    }
+
+    //新增商品主檔內容圖片
+    public function uploadimage(Request $req, $product_id, $type)
+    {
+        if ($req->hasFile('file')) {
+            $image = $req->file('file');
+            $file_path = $image->store("public/product/$product_id/$type");
+            $filename = $image->hashName();
+            DB::table('image_list')->insert([
+                'filename' => $filename,
+                'product_id' => $product_id,
+                'product_type' => $type,
+                'date' => now(),
+            ]);
+
+            return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/product/$product_id/$type/$filename"];
+
+        }
+    }
+
+    //新增商品主檔廢棄圖片
+    public function imagenone()
+    {
+        //上傳後沒發布的圖片
+        $notitle_images = DB::select("SELECT image_list.* from image_list
+                            LEFT JOIN product
+                              ON image_list.product_id = product.productId
+                            WHERE image_list.product_id
+                            NOT IN(SELECT productId FROM product)");
+
+        //更新傳圖未上傳 || 上傳後刪除 (文章內無顯示的圖)
+        $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
+                              LEFT JOIN product
+                              ON image_list.product_id = product.productId
+                              WHERE product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%')
+                              AND product.description NOT LIKE CONCAT('%', image_list.filename, '%')
+                              AND product.composition NOT LIKE CONCAT('%', image_list.filename, '%')");
+        return view('Product.Imagenone', ['notitle_images' => $notitle_images, 'hastitle_images' => $hastitle_images]);
+
+    }
+
+    public function delete_product_image_notuse(Request $req)
+    {
+        if (!isset($req->type)) {
+            return redirect()->route('ProductImageNone');
+        }
+
+        if ($req->type == 1) {
+            $notitle_images = DB::select("SELECT image_list.* from image_list
+                            LEFT JOIN product
+                              ON image_list.product_id = product.productId
+                            WHERE image_list.product_id
+                            NOT IN(SELECT productId FROM product)");
+
+            foreach ($notitle_images as $image) {
+                Storage::delete("/public/product/$image->product_id/$image->filename");
+                $fileInFolder = Storage::allFiles("/public/product/$image->product_id/$image->filename");
+                if (empty($fileInFolder)) {
+                    Storage::deleteDirectory("/public/product/$image->product_id");
+                }
+
+                DB::table('image_list')
+                    ->where('product_id', $image->product_id)
+                    ->where('filename', $image->filename)
+                    ->delete();
+            }
+            return redirect()->route('ProductImageNone');
+
+        } else {
+            $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
+                              LEFT JOIN product
+                              ON image_list.product_id = product.productId
+                              WHERE product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%')
+                              AND product.description NOT LIKE CONCAT('%', image_list.filename, '%')
+                              AND product.composition NOT LIKE CONCAT('%', image_list.filename, '%')");
+
+            foreach ($hastitle_images as $image) {
+                Storage::delete("/public/product/$image->product_id/$image->product_type/$image->filename");
+                $fileInFolder = Storage::allFiles("/public/product/$image->product_id/$image->product_type");
+                // return $fileInFolder;
+                if (empty($fileInFolder)) {
+                    Storage::deleteDirectory("/public/product/$image->product_id/$image->product_type");
+                }
+
+                $fileInRootFolder = Storage::allFiles("/public/product/$image->product_id");
+                // return $fileInRootFolder;
+                if (empty($fileInRootFolder)) {
+                    Storage::deleteDirectory("/public/product/$image->product_id");
+                }
+
+                DB::table('image_list')
+                    ->where('product_id', $image->product_id)
+                    ->where('filename', $image->filename)
+                    ->delete();
+            }
+            return redirect()->route('ProductImageNone');
+
+        }
     }
 }

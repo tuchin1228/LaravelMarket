@@ -57,31 +57,54 @@
         </div>
     </div>
     <div class="d-flex justify-content-end align-items-center border-bottom py-1">
-        <a href="{{route('ProductCategoryAddPage')}}" class="btn btn-primary">新增商品</a>
+        <a href="{{route('CreateProductPage')}}" class="btn btn-primary">新增商品主檔</a>
     </div>
     <div>
         <table class="my-2 table table-hover table-bordered">
             <tr>
-                <th width="20%">【分類】名稱</th>
-                <th class="text-center" width="20%">數量</th>
-                <th class="text-center" width="20%">排序</th>
-                <th class="text-center" width="20%">啟用</th>
-                <th class="text-center" width="20%">操作</th>
+                <th width="25%">【分類】名稱</th>
+                <th class="text-center" width="25%">排序</th>
+                <th class="text-center" width="25%">啟用</th>
+                <th class="text-center" width="25%">操作</th>
             </tr>
             @foreach ($products as $product)
             <tr>
                 <td>【{{$product->productCateName}}】{{$product->productName}}</td>
-                <td class="text-center">{{$product->quantity}}</td>
                 <td class="text-center">{{$product->sort}}</td>
-                <td class="text-center">@if ($product->enable == 1)
+                <td class="text-center">
+                    @if ($product->enable)
                     <span class="bg-success p-1 rounded text-white">啟用中</span>
                     @else
                     <span class="bg-danger p-1 rounded text-white">未啟用</span>
                     @endif</td>
                 <td class="text-center">
                     <button type="button" class="btn btn-sm btn-success">詳情</button>
-                    <button type="button" class="btn btn-sm btn-warning">編輯</button>
-                    <button type="button" class="btn btn-sm btn-danger">刪除</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal{{$product->productId}}">刪除</button>
+                    <div class="modal fade" id="deleteModal{{$product->productId}}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">確認刪除</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <h6>刪除後將無法復原</h6>
+                                    <h5>確認刪除<span class="fw-bold">{{$product->productName}}</span></h5>
+                                </div>
+                                <form action="{{route('DeleteProduct')}}" method="POST">
+                                    @csrf
+                                    <input type="text" hidden name="deleteId" value="{{$product->productId}}">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">取消</button>
+                                        <button type="submit" class="btn btn-danger">刪除</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
             @endforeach

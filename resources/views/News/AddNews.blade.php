@@ -159,7 +159,6 @@
         selector: 'textarea',
         plugins: 'image code',
         min_height: 500,
-        document_base_url: "storage/uploads/",
         toolbar: [{
                 name: 'history',
                 items: ['undo', 'redo']

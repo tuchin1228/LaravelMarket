@@ -159,11 +159,26 @@ Route::prefix('Product')->group(function () {
 
     /************************************/
 
-    //顯示分類產品頁面
-    Route::get('/{category}', [Product::class, 'product'])->name('CategoryProduct');
-
     //顯示搜尋結果產品頁面
     Route::get('/search/{keyword}', [Product::class, 'search_product'])->name('SearchProduct');
+
+    //刪除產品
+    Route::post('/delete', [Product::class, 'product_delete'])->name('DeleteProduct');
+
+    //建立商品主檔頁面
+    Route::get('/create', [Product::class, 'product_create_page'])->name('CreateProductPage');
+
+    //建立商品主檔
+    Route::post('/create', [Product::class, 'product_create'])->name('CreateProduct');
+
+    //商品無用圖片管理
+    Route::get('/imagenone', [Product::class, 'imagenone'])->name('ProductImageNone');
+
+    //最新消息刪除無用圖片管理
+    Route::post('/delete_product_image_notuse', [Product::class, 'delete_product_image_notuse'])->name('DeleteProductImageNotuse');
+
+    //顯示分類產品頁面
+    Route::get('/{category}', [Product::class, 'product'])->name('CategoryProduct');
 
     //顯示所有產品頁面
     Route::get('/', [Product::class, 'product'])->name('AllProduct');

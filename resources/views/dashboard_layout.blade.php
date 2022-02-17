@@ -119,6 +119,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{route('ProductImageNone')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">圖片管理</div>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
