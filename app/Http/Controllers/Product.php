@@ -229,6 +229,20 @@ class Product extends Controller
         return view('Product.CreateProduct', $data);
     }
 
+    public function product_edit_page($productId)
+    {
+
+        $data['tags'] = DB::select("SELECT * FROM product_tag");
+
+        $data['categories'] = DB::select("SELECT * FROM product_category");
+
+        $product = DB::select("SELECT * FROM product
+                                          WHERE productId = '$productId'");
+        $data['product'] = $product[0];
+        return view('Product.EditProduct', $data);
+
+    }
+
     public function product_create(Request $req)
     {
         // return $req;
@@ -245,6 +259,27 @@ class Product extends Controller
 
         DB::table('product')
             ->insert($data);
+
+        return redirect()->route('AllProduct');
+
+    }
+
+    public function product_edit(Request $req)
+    {
+        $productId = $req->productId;
+        $data['productName'] = $req->productName;
+        $data['productCateId'] = $req->productCateId;
+        $data['productTag'] = $req->productTag;
+        $data['productIntro'] = $req->productIntro;
+        $data['sort'] = $req->sort;
+        $data['enable'] = $req->enable;
+        $data['description'] = $req->description;
+        $data['composition'] = $req->composition;
+        $data['buyflow'] = $req->buyflow;
+
+        DB::table('product')
+            ->where('productId', $productId)
+            ->update($data);
 
         return redirect()->route('AllProduct');
 

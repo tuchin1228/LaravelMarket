@@ -168,8 +168,14 @@ Route::prefix('Product')->group(function () {
     //建立商品主檔頁面
     Route::get('/create', [Product::class, 'product_create_page'])->name('CreateProductPage');
 
+    //編輯商品主檔頁面
+    Route::get('/edit/{productId}', [Product::class, 'product_edit_page'])->name('EditProductPage');
+
     //建立商品主檔
     Route::post('/create', [Product::class, 'product_create'])->name('CreateProduct');
+
+    //更新商品主檔
+    Route::post('/edit', [Product::class, 'product_edit'])->name('EditProduct');
 
     //商品無用圖片管理
     Route::get('/imagenone', [Product::class, 'imagenone'])->name('ProductImageNone');

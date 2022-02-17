@@ -79,6 +79,8 @@
                     @endif</td>
                 <td class="text-center">
                     <button type="button" class="btn btn-sm btn-success">詳情</button>
+                    <a href="{{route('EditProductPage',['productId'=>$product->productId])}}"
+                        class="btn btn-sm btn-warning">編輯</a>
                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
                         data-bs-target="#deleteModal{{$product->productId}}">刪除</button>
                     <div class="modal fade" id="deleteModal{{$product->productId}}" tabindex="-1" aria-hidden="true">
