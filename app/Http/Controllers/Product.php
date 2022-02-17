@@ -202,6 +202,11 @@ class Product extends Controller
         }
 
         $deleteId = $req->deleteId;
+        DB::table('image_list')
+            ->where('product_id', $deleteId)
+            ->delete();
+
+        Storage::deleteDirectory("/public/product/$deleteId");
 
         DB::table('product_detail')
             ->where('productId', $deleteId)
@@ -275,12 +280,13 @@ class Product extends Controller
                             NOT IN(SELECT productId FROM product)");
 
         //更新傳圖未上傳 || 上傳後刪除 (文章內無顯示的圖)
-        $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
+        $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.productId,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
                               LEFT JOIN product
                               ON image_list.product_id = product.productId
-                              WHERE product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%')
-                              AND product.description NOT LIKE CONCAT('%', image_list.filename, '%')
-                              AND product.composition NOT LIKE CONCAT('%', image_list.filename, '%')");
+                              WHERE image_list.product_id IS NOT NULL
+							  AND (product.description NOT LIKE CONCAT('%', image_list.filename, '%') OR product.description IS NULL)
+                              AND (product.composition NOT LIKE CONCAT('%', image_list.filename, '%') OR product.composition IS NULL)
+                              AND (product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%') OR product.buyflow IS NULL)");
         return view('Product.Imagenone', ['notitle_images' => $notitle_images, 'hastitle_images' => $hastitle_images]);
 
     }
@@ -313,12 +319,13 @@ class Product extends Controller
             return redirect()->route('ProductImageNone');
 
         } else {
-            $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
+            $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.productId,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
                               LEFT JOIN product
                               ON image_list.product_id = product.productId
-                              WHERE product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%')
-                              AND product.description NOT LIKE CONCAT('%', image_list.filename, '%')
-                              AND product.composition NOT LIKE CONCAT('%', image_list.filename, '%')");
+                              WHERE image_list.product_id IS NOT NULL
+							  AND (product.description NOT LIKE CONCAT('%', image_list.filename, '%') OR product.description IS NULL)
+                              AND (product.composition NOT LIKE CONCAT('%', image_list.filename, '%') OR product.composition IS NULL)
+                              AND (product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%') OR product.buyflow IS NULL)");
 
             foreach ($hastitle_images as $image) {
                 Storage::delete("/public/product/$image->product_id/$image->product_type/$image->filename");
