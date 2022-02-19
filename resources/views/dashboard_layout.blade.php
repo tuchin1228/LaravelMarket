@@ -125,7 +125,13 @@
                         <div class="menu-title">圖片管理</div>
                     </a>
                 </li>
-
+                <li>
+                    <a href="{{route('ProductAdditionalPage')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">加購品</div>
+                    </a>
+                </li>
                 <li>
                     <a href="javascript:;">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>

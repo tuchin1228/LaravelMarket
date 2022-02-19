@@ -386,6 +386,54 @@ class Product extends Controller
         }
     }
 
+    public function upload_product_image(Request $req)
+    {
+        if ($req->hasFile('formFile')) {
+            $image = $req->file('formFile');
+            $productId = $req->productId;
+            $file_path = $image->store("public/product/$productId/product");
+
+            $filename = $image->hashName();
+            DB::table('image_list')->insert([
+                'filename' => $filename,
+                'product_id' => $productId,
+                'product_type' => 'product',
+                'date' => now(),
+            ]);
+
+        }
+
+        return redirect()->route('ProductDetailPage', ['productId' => $productId]);
+
+    }
+
+    public function delete_product_image(Request $req)
+    {
+        if (empty($req->productId) || empty($req->filename)) {
+            return redirect()->back();
+        }
+        $productId = $req->productId;
+        $filename = $req->filename;
+
+        Storage::delete("/public/product/$productId/product/$filename");
+        $fileInFolder = Storage::allFiles("/public/product/$productId/product");
+        if (empty($fileInFolder)) {
+            Storage::deleteDirectory("/public/product/$productId/product");
+        }
+        $fileInRootFolder = Storage::allFiles("/public/product/$productId");
+        if (empty($fileInRootFolder)) {
+            Storage::deleteDirectory("/public/product/$productId");
+        }
+
+        DB::table('image_list')
+            ->where('product_id', $productId)
+            ->where('filename', $filename)
+            ->delete();
+
+        return redirect()->route('ProductDetailPage', ['productId' => $productId]);
+
+    }
+
     /******************************
     productDetail
      ******************************/
@@ -402,12 +450,14 @@ class Product extends Controller
                                LEFT JOIN product_tag AS C
                                ON A.productTag = C.id
                                WHERE productId = '$productId'");
+        $data['product'] = $product[0];
 
-        $productDetail = DB::select("SELECT * FROM product_detail
+        $data['productDetails'] = DB::select("SELECT * FROM product_detail
                                      WHERE productId = '$productId'");
 
-        $data['product'] = $product[0];
-        $data['productDetails'] = empty($productDetail) ? null : $productDetail;
+        $data['productImages'] = DB::select("SELECT * FROM image_list
+                                     WHERE product_id = '$productId'
+                                     AND product_type = 'product'");
 
         return view('Product.ProductDetail', $data);
     }
@@ -467,4 +517,8 @@ class Product extends Controller
 
     }
 
+    public function product_additional_page()
+    {
+        return view('Product.ProductAdditional');
+    }
 }

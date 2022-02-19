@@ -312,6 +312,30 @@
             </div>
         </div>
     </div>
-
+    <hr />
+    <div>
+        <h4 class="fw-bold">商品圖管理</h4>
+        <form class="my-3" action="{{route('UploadProductImage')}}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <label for="formFile" class="form-label">上傳商品圖</label>
+            <input class="form-control" name="formFile" onchange="this.form.submit()" type="file" value=""
+                id="formFile">
+            <input type="text" name="productId" value="{{$product->productId}}" hidden>
+        </form>
+        <div class="d-flex flex-wrap align-items-start">
+            @foreach ($productImages as $productImage)
+            <div class="p-2 border rounded m-2" style="width: 300px;">
+                <img class="w-100"
+                    src="../../storage/product/{{$product->productId}}/product/{{$productImage->filename}}" alt="">
+                <form action="{{route('DeleteProductImage')}}" method="post">
+                    @csrf
+                    <input type="text" hidden name="filename" value="{{$productImage->filename}}">
+                    <input type="text" hidden name="productId" value="{{$product->productId}}">
+                    <button type="submit" class="my-1 btn btn-outline-danger d-block w-100">刪除</button>
+                </form>
+            </div>
+            @endforeach
+        </div>
+    </div>
 </div>
 @endsection

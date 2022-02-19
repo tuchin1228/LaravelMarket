@@ -189,23 +189,29 @@ Route::prefix('Product')->group(function () {
     //顯示所有產品頁面
     Route::get('/', [Product::class, 'product'])->name('AllProduct');
 
+    //上傳商品圖
+    Route::post('/uploadProductImage', [Product::class, 'upload_product_image'])->name('UploadProductImage');
+
+    //刪除商品圖
+    Route::post('/deleteProductImage', [Product::class, 'delete_product_image'])->name('DeleteProductImage');
+
     /************************************/
 
     //顯示所有產品頁面
     Route::get('/detail/{productId}', [Product::class, 'product_detail_page'])->name('ProductDetailPage');
 
     //新增商品子檔
-    Route::post('/detail_add', [Product::class, 'product_detail_add'])->name('AddProductDetail');
+    Route::post('/detail/detail_add', [Product::class, 'product_detail_add'])->name('AddProductDetail');
 
     //編輯商品子檔
-    Route::post('/detail_edit', [Product::class, 'product_detail_edit'])->name('EditProductDetail');
+    Route::post('/detail/detail_edit', [Product::class, 'product_detail_edit'])->name('EditProductDetail');
 
     //刪除商品子檔
-    Route::post('/detail_delete', [Product::class, 'product_detail_delete'])->name('DeleteProductDetail');
+    Route::post('/detail/detail_delete', [Product::class, 'product_detail_delete'])->name('DeleteProductDetail');
 
     /************************************/
 
     //加購產品頁面
-    Route::get('/additional', [Product::class, 'product_additional_page'])->name('ProductAdditionalPage');
+    Route::get('/additional/products', [Product::class, 'product_additional_page'])->name('ProductAdditionalPage');
 
 });
