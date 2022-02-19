@@ -26,6 +26,9 @@
         !!} --}}
         <form class="w-3/5 mx-auto" method="POST" action="{{route('CreateProduct')}}" enctype="multipart/form-data">
             @csrf
+            <div class="col-12  text-end">
+                <button type="submit" class="btn btn-primary px-5">確認新增</button>
+            </div>
             <label for="" class="d-block mt-4">商品名稱</label>
             <input type="text" name="productName" class="form-control my-2" value="{{old('productName')}}" required
                 id="productName" placeholder="標題">
@@ -96,9 +99,7 @@
 <textarea id="buyflow" name="buyflow">{{old('buyflow')}}</textarea>
 <input type="text" hidden value="" name="productId">
 
-<div class="col-12 my-3 text-center">
-    <button type="submit" class="btn btn-primary px-5">確認新增</button>
-</div>
+
 </form>
 {{-- {!! Form::close() !!} --}}
 </div>

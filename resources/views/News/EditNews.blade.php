@@ -26,6 +26,13 @@
         !!} --}}
         <form class="w-3/5 mx-auto" method="POST" action="{{route('UpdateNews')}}" enctype="multipart/form-data">
             @csrf
+            <select name="cateId" id="cateId" class="form-select  my-2 ">
+                @foreach ($categories as $category)
+                <option value="{{$category->id}}" @if ($category->id == $article->cateId )
+                    selected
+                    @endif >{{$category->articles_cate_title}}</option>
+                @endforeach
+            </select>
             <input type="text" name="title" class="form-control my-2" value="{{$article->title}}" required id="title"
                 placeholder="標題">
             <textarea id="mytextarea" name="content">{{$article->content}}</textarea>

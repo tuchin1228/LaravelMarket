@@ -189,4 +189,23 @@ Route::prefix('Product')->group(function () {
     //顯示所有產品頁面
     Route::get('/', [Product::class, 'product'])->name('AllProduct');
 
+    /************************************/
+
+    //顯示所有產品頁面
+    Route::get('/detail/{productId}', [Product::class, 'product_detail_page'])->name('ProductDetailPage');
+
+    //新增商品子檔
+    Route::post('/detail_add', [Product::class, 'product_detail_add'])->name('AddProductDetail');
+
+    //編輯商品子檔
+    Route::post('/detail_edit', [Product::class, 'product_detail_edit'])->name('EditProductDetail');
+
+    //刪除商品子檔
+    Route::post('/detail_delete', [Product::class, 'product_detail_delete'])->name('DeleteProductDetail');
+
+    /************************************/
+
+    //加購產品頁面
+    Route::get('/additional', [Product::class, 'product_additional_page'])->name('ProductAdditionalPage');
+
 });

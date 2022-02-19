@@ -385,4 +385,86 @@ class Product extends Controller
 
         }
     }
+
+    /******************************
+    productDetail
+     ******************************/
+
+    public function product_detail_page($productId)
+    {
+        if (empty($productId)) {
+            return redirect()->back();
+        }
+
+        $product = DB::select("SELECT A.* , B.productCateName ,C.tagName FROM product AS A
+                               LEFT JOIN product_category AS B
+                               ON A.productCateId = B.id
+                               LEFT JOIN product_tag AS C
+                               ON A.productTag = C.id
+                               WHERE productId = '$productId'");
+
+        $productDetail = DB::select("SELECT * FROM product_detail
+                                     WHERE productId = '$productId'");
+
+        $data['product'] = $product[0];
+        $data['productDetails'] = empty($productDetail) ? null : $productDetail;
+
+        return view('Product.ProductDetail', $data);
+    }
+
+    public function product_detail_add(Request $req)
+    {
+        // return $req;
+        $data['productDetailName'] = $req->productDetailName;
+        $data['quantity'] = $req->quantity;
+        $data['originPrice'] = $req->originPrice;
+        $data['salePrice'] = $req->salePrice;
+        $data['cost'] = $req->cost;
+        $data['sort'] = $req->sort;
+        $data['enable'] = $req->enable;
+        $data['productId'] = $req->productId;
+        $data['productDetailId'] = time();
+
+        DB::table('product_detail')
+            ->insert($data);
+
+        return redirect()->route('ProductDetailPage', ['productId' => $req->productId]);
+
+    }
+
+    public function product_detail_edit(Request $req)
+    {
+        // return $req;
+        if (empty($req->productId) || empty($req->productDetailId)) {
+            return redirect()->back();
+        }
+        $data['productDetailName'] = $req->productDetailName;
+        $data['quantity'] = $req->quantity;
+        $data['originPrice'] = $req->originPrice;
+        $data['salePrice'] = $req->salePrice;
+        $data['cost'] = $req->cost;
+        $data['sort'] = $req->sort;
+        $data['enable'] = $req->enable;
+        $productId = $req->productId;
+        $productDetailId = $req->productDetailId;
+        DB::table('product_detail')
+            ->where('productDetailId', $productDetailId)
+            ->update($data);
+        return redirect()->route('ProductDetailPage', ['productId' => $productId]);
+    }
+
+    public function product_detail_delete(Request $req)
+    {
+        if (empty($req->productId) || empty($req->deleteId)) {
+            return redirect()->back();
+        }
+        $productId = $req->productId;
+        $deleteId = $req->deleteId;
+        DB::table('product_detail')
+            ->where('productDetailId', $deleteId)
+            ->delete();
+        return redirect()->route('ProductDetailPage', ['productId' => $productId]);
+
+    }
+
 }

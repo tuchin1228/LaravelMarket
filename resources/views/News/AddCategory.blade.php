@@ -24,7 +24,7 @@
         <form class="w-3/5 mx-auto" method="POST" action="{{route('AddCategory')}}">
             @csrf
             <div class="my-2">
-                <label for="">名稱</label> <input type="text" name="title" class="form-control my-2"
+                <label for="">名稱</label> <input type="text" name="title" required class="form-control my-2"
                     value="{{old('title')}}">
             </div>
             <div class="my-2">

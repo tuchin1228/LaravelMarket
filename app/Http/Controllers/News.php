@@ -37,12 +37,18 @@ class News extends Controller
 
     public function add_index()
     {
-
-        return view('News.AddNews');
+        $data['categories'] = DB::select("SELECT * FROM articles_category
+                    WHERE enable = 1
+                    ORDER BY articles_cate_sort desc");
+        return view('News.AddNews', $data);
     }
 
     public function edit_news($article_id)
     {
+        $data['categories'] = DB::select("SELECT * FROM articles_category
+                    WHERE enable = 1
+                    ORDER BY articles_cate_sort desc");
+
         $article = DB::select("SELECT * FROM articles
                     WHERE article_id = '$article_id'");
         if (empty($article)) {
@@ -87,6 +93,7 @@ class News extends Controller
         $data['title'] = $req->title;
         $data['content'] = $req->content;
         $data['article_id'] = $req->article_id;
+        $data['cateId'] = $req->cateId;
         $data['created_at'] = date('Y-m-d h:i:s', time());
 
         DB::table("articles")
