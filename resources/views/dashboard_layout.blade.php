@@ -40,10 +40,10 @@
         <div class="sidebar-wrapper" data-simplebar="true">
             <div class="sidebar-header">
                 <div>
-                    <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+                    {{-- <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon"> --}}
                 </div>
                 <div>
-                    <h4 class="logo-text">Rocker</h4>
+                    <h4 class="logo-text fw-bold">後台管理</h4>
                 </div>
                 <div class="toggle-icon ms-auto"><i class='bx bx-arrow-to-left'></i>
                 </div>
@@ -140,7 +140,7 @@
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
                         </div>
@@ -458,13 +458,13 @@
                         </div>
                         <div class="menu-title">Support</div>
                     </a>
-                </li>
+                </li> --}}
             </ul>
             <!--end navigation-->
         </div>
         <!--end sidebar wrapper -->
         <!--start header -->
-        <header>
+        {{-- <header>
             <div class="topbar d-flex align-items-center">
                 <nav class="navbar navbar-expand">
                     <div class="mobile-toggle-menu"><i class='bx bx-menu'></i>
@@ -879,7 +879,7 @@
                     </div>
                 </nav>
             </div>
-        </header>
+        </header> --}}
         <!--end header -->
         <!--start page wrapper -->
         <div class="page-wrapper">
@@ -1009,6 +1009,7 @@
     <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
     <!--plugins-->
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/axios.min.js')}}"></script>
     <script src="{{asset('assets/plugins/simplebar/js/simplebar.min.js')}}"></script>
     <script src="{{asset('assets/plugins/metismenu/js/metisMenu.min.js')}}"></script>
     <script src="{{asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>

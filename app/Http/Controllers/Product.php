@@ -310,15 +310,17 @@ class Product extends Controller
         //上傳後沒發布的圖片
         $notitle_images = DB::select("SELECT image_list.* from image_list
                             LEFT JOIN product
-                              ON image_list.product_id = product.productId
+                            ON image_list.product_id = product.productId
                             WHERE image_list.product_id
-                            NOT IN(SELECT productId FROM product)");
+                            NOT IN(SELECT productId FROM product)
+                            AND image_list.product_type != 'product'");
 
         //更新傳圖未上傳 || 上傳後刪除 (文章內無顯示的圖)
         $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.productId,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
                               LEFT JOIN product
                               ON image_list.product_id = product.productId
                               WHERE image_list.product_id IS NOT NULL
+                              AND image_list.product_type != 'product'
 							  AND (product.description NOT LIKE CONCAT('%', image_list.filename, '%') OR product.description IS NULL)
                               AND (product.composition NOT LIKE CONCAT('%', image_list.filename, '%') OR product.composition IS NULL)
                               AND (product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%') OR product.buyflow IS NULL)");
@@ -519,6 +521,266 @@ class Product extends Controller
 
     public function product_additional_page()
     {
-        return view('Product.ProductAdditional');
+
+        $data['productAdditionals'] = DB::table("product_addtional")
+            ->orderBY('sort', 'desc')
+            ->paginate(5);
+
+        return view('Product.ProductAdditional', $data);
     }
+
+    public function product_additional_detail($productAdditionId)
+    {
+        $productAdditional = DB::select("SELECT *,DATE_FORMAT(startTime, '%Y-%m-%dT%H:%i') AS startTime ,DATE_FORMAT(endTime, '%Y-%m-%dT%H:%i') AS endTime FROM product_addtional
+                                                  WHERE productAdditionId = '$productAdditionId'");
+
+        $productAdditionalDetail = DB::select("SELECT A.addition_price,A.productAdditionId ,B.*  FROM product_addtional_detail AS A
+                                               LEFT JOIN product AS B
+                                               ON  A.productId = B.productId
+                                               WHERE A.productAdditionId = '$productAdditionId'");
+
+        if (empty($productAdditional)) {
+            return redirect()->back();
+        } else {
+            $data['productAdditional'] = $productAdditional[0];
+            $data['productAdditionalDetail'] = $productAdditionalDetail;
+            return view('Product.ProductAdditionalDetail', $data);
+        }
+
+    }
+
+    public function product_additional_add()
+    {
+        return view('Product.AddProductAdditional');
+    }
+
+    public function product_additional_create(Request $req)
+    {
+        // return $req;
+
+        if ($req->hasFile('formFile')) {
+            // return 'ok';
+            $data['productAdditionName'] = $req->productAdditionName;
+            $data['quantity'] = $req->quantity;
+            $data['startTime'] = $req->startTime;
+            $data['endTime'] = $req->endTime;
+            $data['addition_cost'] = $req->addition_cost;
+            $data['max_quantity'] = $req->max_quantity;
+            $data['sort'] = $req->sort;
+            $data['enable'] = $req->enable;
+            $data['forAll'] = $req->forAll;
+            $productAdditionId = time();
+            $data['productAdditionId'] = $productAdditionId;
+
+            $image = $req->file('formFile');
+            $filename = $image->hashName();
+
+            $data['imageFilename'] = $filename;
+
+            $file_path = $image->store("public/additional_product/$productAdditionId");
+
+            DB::table('product_addtional')
+                ->insert($data);
+
+            return redirect()->route('ProductAdditionalDetail', ['productAdditionId' => $productAdditionId]);
+
+        } else {
+            return redirect()->route('ProductAdditionalAdd')->withInput()->withErrors(['CreateError' => '必須上傳圖片']);
+        }
+    }
+
+    public function product_additional_edit(Request $req)
+    {
+        // return $req;
+        if ($req->hasFile('formFile')) {
+
+            // $productAddition = DB::select("SELECT * FROM product_addtional
+            //             WHERE productAdditionId = '$req->productAdditionId'");
+            // $oldimageFilename = $productAddition[0]->imageFilename;
+
+            // return 'ok';
+            $data['productAdditionName'] = $req->productAdditionName;
+            $data['quantity'] = $req->quantity;
+            $data['startTime'] = $req->startTime;
+            $data['endTime'] = $req->endTime;
+            $data['addition_cost'] = $req->addition_cost;
+            $data['max_quantity'] = $req->max_quantity;
+            $data['sort'] = $req->sort;
+            $data['enable'] = $req->enable;
+            $data['forAll'] = $req->forAll;
+            $productAdditionId = $req->productAdditionId;
+
+            Storage::deleteDirectory("/public/additional_product/$productAdditionId");
+
+            $image = $req->file('formFile');
+            $filename = $image->hashName();
+
+            $data['imageFilename'] = $filename;
+
+            $file_path = $image->store("public/additional_product/$productAdditionId");
+
+            DB::table('product_addtional')
+                ->where('productAdditionId', $productAdditionId)
+                ->update($data);
+
+            return redirect()->route('ProductAdditionalDetail', ['productAdditionId' => $productAdditionId]);
+
+        } else {
+            $data['productAdditionName'] = $req->productAdditionName;
+            $data['quantity'] = $req->quantity;
+            $data['startTime'] = $req->startTime;
+            $data['endTime'] = $req->endTime;
+            $data['addition_cost'] = $req->addition_cost;
+            $data['max_quantity'] = $req->max_quantity;
+            $data['sort'] = $req->sort;
+            $data['enable'] = $req->enable;
+            $data['forAll'] = $req->forAll;
+            $productAdditionId = $req->productAdditionId;
+
+            DB::table('product_addtional')
+                ->where('productAdditionId', $productAdditionId)
+                ->update($data);
+
+            return redirect()->route('ProductAdditionalDetail', ['productAdditionId' => $productAdditionId]);
+
+        }
+
+    }
+
+    public function product_additional_assign(Request $req)
+    {
+        // return $req;
+        $data = [];
+        $products = $req->products;
+        $productAdditionId = $req->productAdditionId;
+        foreach ($products as $key => $product) {
+            $data[] = [
+                'productId' => $product['productId'],
+                'addition_price' => $product['addition_price'],
+                'productAdditionId' => $productAdditionId,
+            ];
+        }
+        // return $data;
+        DB::table('product_addtional_detail')
+            ->insert($data);
+
+        return ['success' => true];
+    }
+
+    /**********************************
+    api
+     *********************************/
+
+    public function KeywordSearchProduct(Request $req)
+    {
+        // return $req;
+        if (!empty($req->keyword)) {
+            $keyword = $req->keyword;
+            $SearchProducts = DB::select("SELECT * FROM product AS A
+                        LEFT JOIN articles_category AS B
+                        ON A.productCateId = B.id
+                        WHERE A.productName LIKE '%$keyword%'");
+            return ['success' => true, 'SearchProducts' => $SearchProducts];
+        } else {
+            return ['success' => false];
+        }
+    }
+
+    //需排除原先已在product_addtional_detail的資料避免重複新增
+    public function KeywordSearchAdditionalProduct(Request $req)
+    {
+        $keyword = $req->keyword;
+        $productAdditionId = $req->productAdditionId;
+
+        if (!empty($keyword) && !empty($productAdditionId)) {
+            $keyword = $req->keyword;
+            $SearchProducts = DB::select("SELECT A.* , B.* ,C.addition_price,C.productAdditionId FROM product AS A
+                                          LEFT JOIN articles_category AS B
+                                          ON A.productCateId = B.id
+                                          LEFT JOIN product_addtional_detail AS C
+                                          ON A.productId = C.productId
+                                          WHERE A.productName LIKE '%$keyword%'
+                                          AND (C.productAdditionId != '$productAdditionId'
+										  OR C.productAdditionId IS NULL)
+                                          AND A.enable = 1");
+            return ['success' => true, 'SearchProducts' => $SearchProducts];
+        } else {
+            return ['success' => false];
+        }
+
+    }
+
+    public function product_additional_editAdditionalPrice(Request $req)
+    {
+        // return $req;
+        $addition_price = $req->addition_price;
+        $productId = $req->productId;
+        $productAdditionId = $req->productAdditionId;
+        DB::table('product_addtional_detail')
+            ->where('productId', $productId)
+            ->where('productAdditionId', $productAdditionId)
+            ->update([
+                'addition_price' => $addition_price,
+            ]);
+        return redirect()->back();
+    }
+
+    public function product_additional_deleteDetail(Request $req)
+    {
+        // return $req;
+        $productId = $req->deleteId;
+        $productAdditionId = $req->productAdditionId;
+        DB::table('product_addtional_detail')
+            ->where('productId', $productId)
+            ->where('productAdditionId', $productAdditionId)
+            ->delete();
+        return redirect()->back();
+
+    }
+
+    public function product_additional_consistentAdditionalPrice(Request $req)
+    {
+        // return $req;
+
+        $productAdditionId = $req->productAdditionId;
+        $addition_price = $req->addition_price;
+        DB::table('product_addtional_detail')
+            ->where('productAdditionId', $productAdditionId)
+            ->update([
+                'addition_price' => $addition_price,
+            ]);
+
+        return redirect()->back();
+
+    }
+
+    public function product_additional_deleteAllDetail(Request $req)
+    {
+        // return $req;
+        $productAdditionId = $req->productAdditionId;
+
+        DB::table('product_addtional_detail')
+            ->where('productAdditionId', $productAdditionId)
+            ->delete();
+
+        return redirect()->back();
+
+    }
+
+    public function product_additional_delete(Request $req)
+    {
+        // return $req;
+
+        $productAdditionId = $req->productAdditionId;
+        DB::table('product_addtional_detail')
+            ->where('productAdditionId', $productAdditionId)
+            ->delete();
+        DB::table('product_addtional')
+            ->where('productAdditionId', $productAdditionId)
+            ->delete();
+
+        return redirect()->back();
+
+    }
+
 }

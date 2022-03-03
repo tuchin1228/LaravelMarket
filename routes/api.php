@@ -25,3 +25,10 @@ Route::post('/uploadimage/{article_id}/{date}', [News::class, 'uploadimage'])->n
 Route::post('/uploadProductimage/{product_id}/{type}', [Product::class, 'uploadimage'])->name('Uploadimage');
 
 Route::post('/uploadimage', function () {return 32131;})->name('Uploadimg');
+
+Route::post('/KeywordSearchProduct', [Product::class, 'KeywordSearchProduct'])->name('KeywordSearchProduct');
+
+Route::post('/KeywordSearchAdditionalProduct', [Product::class, 'KeywordSearchAdditionalProduct'])->name('KeywordSearchAdditionalProduct');
+
+//加購產品指定主檔
+Route::post('/assignProduct', [Product::class, 'product_additional_assign'])->name('ProductAdditionalAssign');

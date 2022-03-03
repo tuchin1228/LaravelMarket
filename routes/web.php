@@ -214,4 +214,34 @@ Route::prefix('Product')->group(function () {
     //加購產品頁面
     Route::get('/additional/products', [Product::class, 'product_additional_page'])->name('ProductAdditionalPage');
 
+    //新增加購產品頁面
+    Route::get('/additional/add', [Product::class, 'product_additional_add'])->name('ProductAdditionalAdd');
+
+    //新增加購產品
+    Route::post('/additional/create', [Product::class, 'product_additional_create'])->name('ProductAdditionalCreate');
+
+    //加購產品詳情
+    Route::get('/additional/detail/{productAdditionId}', [Product::class, 'product_additional_detail'])->name('ProductAdditionalDetail');
+
+    //刪除加購產品
+    Route::post('/additional/delete', [Product::class, 'product_additional_delete'])->name('ProductAdditionalDelete');
+
+    //編輯加購產品
+    Route::post('/additional/edit', [Product::class, 'product_additional_edit'])->name('ProductAdditionalEdit');
+
+    //更新加購產品價
+    Route::post('/additional/editAdditionalPrice', [Product::class, 'product_additional_editAdditionalPrice'])->name('ProductAdditionalPrice');
+
+    //統一加購產品價
+    Route::post('/additional/consistentAdditionalPrice', [Product::class, 'product_additional_consistentAdditionalPrice'])->name('ConsistentProductAdditionalPrice');
+
+    //刪除加購指定主檔
+    Route::post('/additional/deleteDetail', [Product::class, 'product_additional_deleteDetail'])->name('ProductAdditionaldeleteDetail');
+
+    //刪除加購指定主檔
+    Route::post('/additional/deleteAllDetail', [Product::class, 'product_additional_deleteAllDetail'])->name('ProductAdditionaldeleteAllDetail');
+
+    // //加購產品指定主檔
+    // Route::post('/assignProduct', [Product::class, 'product_additional_assign'])->name('ProductAdditionalAssign');
+
 });

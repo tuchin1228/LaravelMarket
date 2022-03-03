@@ -128,10 +128,10 @@
             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                 data-bs-target="#addProductDetail">新增子商品</button>
         </div>
+        <h4 class="fw-bold">子商品資訊</h4>
         @if (!empty($productDetails))
 
 
-        <h4 class="fw-bold">子商品資訊</h4>
         @foreach ($productDetails as $productDetail)
 
         <div class="row p-2 m-2 border rounded">

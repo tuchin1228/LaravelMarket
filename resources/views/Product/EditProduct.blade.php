@@ -319,7 +319,7 @@
         // toolbar: 'undo redo | link image | code',
         image_title: true,
         // automatic_uploads: true,
-        images_upload_url: `../api/uploadProductimage/${productId}/composition`,
+        images_upload_url: `../../api/uploadProductimage/${productId}/composition`,
         file_picker_types: 'image',
         file_picker_callback: function (cb, value, meta) {
             console.log('file_picker_callback');
@@ -387,7 +387,7 @@
         // toolbar: 'undo redo | link image | code',
         image_title: true,
         // automatic_uploads: true,
-        images_upload_url: `../api/uploadProductimage/${productId}/buyflow`,
+        images_upload_url: `../../api/uploadProductimage/${productId}/buyflow`,
         file_picker_types: 'image',
         file_picker_callback: function (cb, value, meta) {
             console.log('file_picker_callback');
