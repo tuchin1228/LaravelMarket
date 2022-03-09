@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\About;
+use App\Http\Controllers\CarouselApi;
 use App\Http\Controllers\News;
+use App\Http\Controllers\NewsApi;
 use App\Http\Controllers\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,11 +23,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/uploadimage/{article_id}/{date}', [News::class, 'uploadimage'])->name('Uploadimage');
+// 輪播
+Route::prefix('Carousel')->group(function () {
+    //取得所有輪播
+    Route::get('/GetCarousel', [CarouselApi::class, 'index'])->name('CarouselApi');
 
-Route::post('/uploadProductimage/{product_id}/{type}', [Product::class, 'uploadimage'])->name('Uploadimage');
+});
 
-Route::post('/uploadimage', function () {return 32131;})->name('Uploadimg');
+Route::prefix('News')->group(function () {
+
+    //取得最新兩則新聞
+    Route::get('/GetTwoNews', [NewsApi::class, 'twonews'])->name('GetTwoNews');
+
+});
+
+Route::post('/uploadimage/{article_id}/{date}', [News::class, 'uploadimage'])->name('UploadArticleimage');
+
+Route::post('/uploadProductimage/{product_id}/{type}', [Product::class, 'uploadimage'])->name('UploadProductimage');
+
+Route::post('/uploadAboutimage/{about_id}', [About::class, 'uploadimage'])->name('UploadAboutimage');
 
 Route::post('/KeywordSearchProduct', [Product::class, 'KeywordSearchProduct'])->name('KeywordSearchProduct');
 

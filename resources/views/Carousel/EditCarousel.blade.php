@@ -61,8 +61,12 @@
                     <div class="col-12">
                         <label for="size" class="form-label">尺寸</label>
                         <select id="size" class="form-select" value="{{$carousel->size}}" name="size">
-                            <option value="0">桌機</option>
-                            <option value="1">手機</option>
+                            <option value="0" @if ($carousel->size == 0)
+                                selected
+                                @endif>桌機</option>
+                            <option value="1" @if ($carousel->size == 1)
+                                selected
+                                @endif>手機</option>
                         </select>
                     </div>
 

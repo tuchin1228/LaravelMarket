@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\About;
 use App\Http\Controllers\Carousel;
 use App\Http\Controllers\News;
 use App\Http\Controllers\Product;
@@ -52,6 +53,35 @@ Route::prefix('Carousel')->group(function () {
 
     // 手機、桌機個別輪播
     Route::get('/{type}', [Carousel::class, 'rwd_index'])->name('RwdCarousel');
+
+});
+
+// 關於
+Route::prefix('About')->group(function () {
+
+    //顯示所有關於
+    Route::get('/', [About::class, 'index'])->name('About');
+
+    //新增關於頁面
+    Route::get('/AddAbout', [About::class, 'add_index'])->name('AddAbout');
+
+    //新增關於
+    Route::post('/AddAbout', [About::class, 'add_About'])->name('UploadAbout');
+
+    //編輯關於頁面
+    Route::get('/EditAbout/{about_id}', [About::class, 'Edit_index'])->name('EditAbout');
+
+    //編輯關於
+    Route::post('/EditAbout', [About::class, 'Edit_About'])->name('UpdateAbout');
+
+    //刪除關於
+    Route::post('/DeleteAbout', [About::class, 'Delete_About'])->name('DeleteAbout');
+
+    //關於無用圖片管理
+    Route::get('/imagenone', [About::class, 'imagenone'])->name('AboutImageNone');
+
+    //關於無用圖片刪除
+    Route::post('/deletenotuse', [About::class, 'deletenotuse'])->name('AboutDeleteNotuse');
 
 });
 

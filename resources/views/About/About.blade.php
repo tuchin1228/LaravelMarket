@@ -1,7 +1,7 @@
 @extends('dashboard_layout')
 
 @section('head')
-<title>最新消息</title>
+<title>品牌介紹</title>
 
 <style>
     ul {
@@ -104,7 +104,6 @@
     .modal-body img {
         width: 100%;
         height: auto;
-
     }
 
 </style>
@@ -113,13 +112,13 @@
 
 @section('body')
 <div class="d-flex align-items-center">
-    <div class="breadcrumb-title pe-3">最新消息</div>
+    <div class="breadcrumb-title pe-3">品牌介紹</div>
     <div class="ps-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 p-0">
                 <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">所有最新消息</li>
+                <li class="breadcrumb-item active" aria-current="page">所有品牌介紹</li>
             </ol>
         </nav>
     </div>
@@ -127,40 +126,39 @@
 
 <div class=" my-3 bg-white p-2">
     <div class="d-flex justify-content-end align-items-center border-bottom py-1">
-        <select id="cateSelect" class="form-select mx-2 w-auto " aria-label="Default select example">
+        {{-- <select id="cateSelect" class="form-select mx-2 w-auto " aria-label="Default select example">
             <option value="{{ route('News') }}">全部</option>
-            @foreach ($category as $cate)
-            <option value="{{ route('CategoryOfNews',['cateId'=>$cate->id]) }}">
-                {{$cate->articles_cate_title}}
-            </option>
-            @endforeach
-        </select>
-        <a href="{{route('AddNews')}}" class="btn btn-primary">新增消息</a>
+        @foreach ($category as $cate)
+        <option value="{{ route('CategoryOfNews',['cateId'=>$cate->id]) }}">
+            {{$cate->articles_cate_title}}
+        </option>
+        @endforeach
+        </select> --}}
+        <a href="{{route('AddAbout')}}" class="btn btn-primary">新增品牌介紹</a>
     </div>
-    <div>
-        @foreach ($articles as $article)
-        <article class="py-2 border-bottom d-flex align-items-start">
-            <img style="max-width:200px;" onclick="LargeImage('{{$article->article_id}}')"
-                class="img{{$article->article_id}} me-2"
-                src="./storage/news/{{$article->article_id}}/{{$article->banner}}" alt="">
-            <div class="article_content" style="width: 100%">
+    <div class="d-flex align-items-start">
+
+        @foreach ($abouts as $about)
+        <article class="p-2 border m-2" style="width: 300px;">
+            {{-- <img onclick="LargeImage('{{$about->about_id}}')" class="img{{$about->about_id}} w-full me-2"
+            src="./storage/news/{{$about->about_id}}/{{$about->imageUrl}}" alt=""> --}}
+            <img class="img{{$about->about_id}} w-100 me-2"
+                src="./storage/HomeAbout/{{$about->about_id}}/{{$about->filename}}" alt="">
+            <div class="article_content my-2" style="width: 100%">
                 <div>
-                    <h2 class="fs-5 fw-bolder">【{{$article->articles_cate_title}}】{{$article->title}}</h2>
-                    <p class="text-secondary my-1">建立日期：{{$article->created_at}}</p>
-                    <p class="text-secondary" style=" text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;-webkit-box-orient: vertical;
-                overflow: hidden; "> {!! strip_tags($article->content,'') !!}</p>
+                    <h2 class="fs-5 fw-bolder">{{$about->title}}</h2>
+                    {{-- <p class="text-secondary my-1">建立日期：{{$article->created_at}}</p> --}}
+
                 </div>
                 <div class="text-end">
                     <button class="btn btn-success" type="button" data-bs-toggle="modal"
-                        data-bs-target="#articleModal{{$article->article_id}}">查看</button>
-                    <a href="{{route('EditNews',['article_id'=>$article->article_id])}}" class="btn btn-warning"
+                        data-bs-target="#aboutModal{{$about->about_id}}">查看</button>
+                    <a href="{{route('EditAbout',['about_id'=>$about->about_id])}}" class="btn btn-warning"
                         type="button">編輯</a>
                     <button class="btn btn-danger" type="button" data-bs-toggle="modal"
-                        data-bs-target="#deleteModal{{$article->article_id}}">刪除</button>
+                        data-bs-target="#deleteModal{{$about->about_id}}">刪除</button>
                     <!-- Modal -->
-                    <div class="modal fade" id="deleteModal{{$article->article_id}}" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="deleteModal{{$about->about_id}}" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -170,10 +168,9 @@
                                 </div>
                                 <div class="modal-body text-center">刪除後將無法復原
                                 </div>
-                                <form action="{{route('DeleteNews')}}" method="POST">
+                                <form action="{{route('DeleteAbout')}}" method="POST">
                                     @csrf
-                                    <input type="text" hidden name="banner" value="{{$article->banner}}">
-                                    <input type="text" hidden name="deleteId" value="{{$article->article_id}}">
+                                    <input type="text" hidden name="deleteId" value="{{$about->about_id}}">
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">取消</button>
@@ -183,16 +180,37 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="articleModal{{$article->article_id}}" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="aboutModal{{$about->about_id}}" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title fw-bold">{{$article->title}}</h5>
+                                    <h5 class="my-0">標題：</h5>
+                                    <h5 class="modal-title fw-bold">{{$about->title}}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
+
                                 <div class="modal-body text-start">
-                                    {!! $article->content !!}
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="my-0">首頁標題：</h5>
+                                        <h5 class="modal-title ">{{$about->subtitle}}</h5>
+                                    </div>
+                                    <hr />
+                                    <div class="d-flex align-items-center">
+                                        <h5 class="my-0">首頁簡介：</h5>
+                                        <h5 class="modal-title ">{{$about->intro}}</h5>
+                                    </div>
+                                    <hr />
+                                    <div class="">
+                                        <h5 class="my-0">連結名稱：{{$about->linkName}}(<a href="{{$about->link}}">連結</a>)
+                                        </h5>
+                                    </div>
+                                    <hr />
+                                    <div class="">
+                                        <h5 class="my-0">內容：</h5>
+                                        {!! $about->content !!}
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -202,10 +220,10 @@
             </div>
         </article>
         @endforeach
-        <div class="my-2">
+        {{--<div class="my-2">
             {{ $articles->links('my-pagination') }}
-        </div>
-    </div>
+    </div> --}}
+</div>
 </div>
 
 <div id="imgModal" style="z-index: 1200" class="modal">
@@ -221,61 +239,34 @@
     let modalImg = document.getElementById("imgbox");
     const img = document.getElementsByTagName("img");
 
-    // function LargeImage(article_id) {
-    //     // let target = document.getElementsByClassName("img" + article_id);
-    //     // console.log(target.getAttribute('src'));
-    //     let atti = $('.img' + article_id).attr('src');
-    //     console.log(atti);
-    //     modal.style.display = "block";
-    //     modalImg.src = atti;
+    // for (var a = 0; a < img.length; a++) {
+    //     img[a].addEventListener("click", function (el) {
+    //         modal.style.display = "block";
+    //         modalImg.src = this.getAttribute('src');
+    //     }, false)
     // }
 
-    // $('.close').on('click', function () {
+    // function changeImage(el) {
+    //     el = el.target;
+    //     el.setAttribute("src", "someimage");
+    // }
+    // var span = document.getElementsByClassName("close")[0];
+    // span.onclick = function () {
     //     modal.style.display = "none";
     //     modalImg.src = ''
-    // })
-    // $('.modal').on('click', function () {
+    // }
+    // modal.onclick = function () {
     //     modal.style.display = "none";
     //     modalImg.src = ''
+    // }
+
+
+
+
+    // $('#cateSelect').change(function () {
+    //     // console.log($('#sizeSelect').val());
+    //     location.href = $('#cateSelect').val()
     // })
-
-    for (var a = 0; a < img.length; a++) {
-        img[a].addEventListener("click", function (el) {
-            modal.style.display = "block";
-            modalImg.src = this.getAttribute('src');
-        }, false)
-    }
-
-    function changeImage(el) {
-        el = el.target;
-        el.setAttribute("src", "someimage");
-    }
-    var span = document.getElementsByClassName("close")[0];
-    span.onclick = function () {
-        modal.style.display = "none";
-        modalImg.src = ''
-    }
-    modal.onclick = function () {
-        modal.style.display = "none";
-        modalImg.src = ''
-    }
-
-    $(document).ready(function () {
-        let cateValue = '{{$cateId}}';
-        if (cateValue == 'all') {
-            $('#cateSelect').val("{{route('News')}}")
-        } else {
-            let url = "{{ route('CategoryOfNews',['cateId'=>':cateValue']) }}"
-            url = url.replace(':cateValue', cateValue);
-            $('#cateSelect').val(url)
-        }
-    })
-
-
-    $('#cateSelect').change(function () {
-        // console.log($('#sizeSelect').val());
-        location.href = $('#cateSelect').val()
-    })
 
 </script>
 @endsection

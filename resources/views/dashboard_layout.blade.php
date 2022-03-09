@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('AddCarousel')}}">
+                    <a href="{{route('About')}}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">關於我們</div>
