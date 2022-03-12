@@ -52,7 +52,6 @@ class Product extends Controller
                 'enable' => $req->enable,
             ]);
         return redirect()->route('ProductCategory');
-
     }
 
     public function product_category_delete(Request $req)
@@ -72,7 +71,6 @@ class Product extends Controller
                 ->delete();
         }
         return redirect()->route('ProductCategory');
-
     }
 
     /**************** 商品標籤 ***************/
@@ -82,7 +80,6 @@ class Product extends Controller
     {
         $data['tags'] = DB::select("SELECT * FROM product_tag");
         return view('Product.Tag', $data);
-
     }
 
     //新增商品標籤頁面
@@ -106,7 +103,6 @@ class Product extends Controller
             ->insert($data);
 
         return redirect()->route('ProductTagAddPage');
-
     }
 
     //編輯商品標籤
@@ -124,7 +120,6 @@ class Product extends Controller
                 'textColor' => $req->textColor,
             ]);
         return redirect()->route('ProductTag');
-
     }
 
     //刪除商品標籤
@@ -146,7 +141,6 @@ class Product extends Controller
             ->where('id', $deleteId)
             ->delete();
         return redirect()->route('ProductTag');
-
     }
 
     /**************** 商品 ***************/
@@ -169,7 +163,6 @@ class Product extends Controller
                 ->select("product.*", "product_category.productCateName")
                 ->orderBY('product.sort', 'desc')->orderBy('product.id', 'desc')
                 ->paginate(5);
-
         }
 
         return view('Product.Product', $data);
@@ -192,7 +185,6 @@ class Product extends Controller
         $data['keyword'] = $keyword;
 
         return view('Product.Product', $data);
-
     }
 
     public function product_delete(Request $req)
@@ -216,7 +208,6 @@ class Product extends Controller
             ->delete();
 
         return redirect()->back();
-
     }
 
     public function product_create_page()
@@ -240,7 +231,6 @@ class Product extends Controller
                                           WHERE productId = '$productId'");
         $data['product'] = $product[0];
         return view('Product.EditProduct', $data);
-
     }
 
     public function product_create(Request $req)
@@ -261,7 +251,6 @@ class Product extends Controller
             ->insert($data);
 
         return redirect()->route('AllProduct');
-
     }
 
     public function product_edit(Request $req)
@@ -282,7 +271,6 @@ class Product extends Controller
             ->update($data);
 
         return redirect()->route('AllProduct');
-
     }
 
     //新增商品主檔內容圖片
@@ -300,7 +288,6 @@ class Product extends Controller
             ]);
 
             return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/product/$product_id/$type/$filename"];
-
         }
     }
 
@@ -316,16 +303,24 @@ class Product extends Controller
                             AND image_list.product_type != 'product'");
 
         //更新傳圖未上傳 || 上傳後刪除 (文章內無顯示的圖)
+        // $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.productId,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
+        //                       LEFT JOIN product
+        //                       ON image_list.product_id = product.productId
+        //                       WHERE image_list.product_id IS NOT NULL
+        //                       AND image_list.product_type != 'product'
+        // 					  AND (product.description NOT LIKE CONCAT('%', image_list.filename, '%') OR product.description IS NULL)
+        //                       AND (product.composition NOT LIKE CONCAT('%', image_list.filename, '%') OR product.composition IS NULL)
+        //                       AND (product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%') OR product.buyflow IS NULL)");
         $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.productId,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
-                              LEFT JOIN product
-                              ON image_list.product_id = product.productId
-                              WHERE image_list.product_id IS NOT NULL
-                              AND image_list.product_type != 'product'
-							  AND (product.description NOT LIKE CONCAT('%', image_list.filename, '%') OR product.description IS NULL)
-                              AND (product.composition NOT LIKE CONCAT('%', image_list.filename, '%') OR product.composition IS NULL)
-                              AND (product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%') OR product.buyflow IS NULL)");
-        return view('Product.Imagenone', ['notitle_images' => $notitle_images, 'hastitle_images' => $hastitle_images]);
+        LEFT JOIN product
+        ON image_list.product_id = product.productId
+        WHERE image_list.product_id IS NOT NULL
+        AND image_list.product_type != 'product'
+        AND (product.description NOT LIKE CONCAT('%', image_list.filename, '%') AND product.created_at IS NOT  NULL)
+        AND (product.composition NOT LIKE CONCAT('%', image_list.filename, '%') AND product.created_at IS NOT  NULL)
+        AND (product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%') AND product.created_at IS NOT NULL)");
 
+        return view('Product.Imagenone', ['notitle_images' => $notitle_images, 'hastitle_images' => $hastitle_images]);
     }
 
     public function delete_product_image_notuse(Request $req)
@@ -354,7 +349,6 @@ class Product extends Controller
                     ->delete();
             }
             return redirect()->route('ProductImageNone');
-
         } else {
             $hastitle_images = DB::select("SELECT image_list.*,product.productName,product.productId,product.buyflow,product.description,product.composition ,product.created_at  FROM image_list
                               LEFT JOIN product
@@ -384,7 +378,6 @@ class Product extends Controller
                     ->delete();
             }
             return redirect()->route('ProductImageNone');
-
         }
     }
 
@@ -402,11 +395,9 @@ class Product extends Controller
                 'product_type' => 'product',
                 'date' => now(),
             ]);
-
         }
 
         return redirect()->route('ProductDetailPage', ['productId' => $productId]);
-
     }
 
     public function delete_product_image(Request $req)
@@ -433,7 +424,6 @@ class Product extends Controller
             ->delete();
 
         return redirect()->route('ProductDetailPage', ['productId' => $productId]);
-
     }
 
     /******************************
@@ -481,7 +471,6 @@ class Product extends Controller
             ->insert($data);
 
         return redirect()->route('ProductDetailPage', ['productId' => $req->productId]);
-
     }
 
     public function product_detail_edit(Request $req)
@@ -516,7 +505,6 @@ class Product extends Controller
             ->where('productDetailId', $deleteId)
             ->delete();
         return redirect()->route('ProductDetailPage', ['productId' => $productId]);
-
     }
 
     public function product_additional_page()
@@ -546,7 +534,6 @@ class Product extends Controller
             $data['productAdditionalDetail'] = $productAdditionalDetail;
             return view('Product.ProductAdditionalDetail', $data);
         }
-
     }
 
     public function product_additional_add()
@@ -583,7 +570,6 @@ class Product extends Controller
                 ->insert($data);
 
             return redirect()->route('ProductAdditionalDetail', ['productAdditionId' => $productAdditionId]);
-
         } else {
             return redirect()->route('ProductAdditionalAdd')->withInput()->withErrors(['CreateError' => '必須上傳圖片']);
         }
@@ -624,7 +610,6 @@ class Product extends Controller
                 ->update($data);
 
             return redirect()->route('ProductAdditionalDetail', ['productAdditionId' => $productAdditionId]);
-
         } else {
             $data['productAdditionName'] = $req->productAdditionName;
             $data['quantity'] = $req->quantity;
@@ -642,9 +627,7 @@ class Product extends Controller
                 ->update($data);
 
             return redirect()->route('ProductAdditionalDetail', ['productAdditionId' => $productAdditionId]);
-
         }
-
     }
 
     public function product_additional_assign(Request $req)
@@ -707,7 +690,6 @@ class Product extends Controller
         } else {
             return ['success' => false];
         }
-
     }
 
     public function product_additional_editAdditionalPrice(Request $req)
@@ -735,7 +717,6 @@ class Product extends Controller
             ->where('productAdditionId', $productAdditionId)
             ->delete();
         return redirect()->back();
-
     }
 
     public function product_additional_consistentAdditionalPrice(Request $req)
@@ -751,7 +732,6 @@ class Product extends Controller
             ]);
 
         return redirect()->back();
-
     }
 
     public function product_additional_deleteAllDetail(Request $req)
@@ -764,7 +744,6 @@ class Product extends Controller
             ->delete();
 
         return redirect()->back();
-
     }
 
     public function product_additional_delete(Request $req)
@@ -780,7 +759,5 @@ class Product extends Controller
             ->delete();
 
         return redirect()->back();
-
     }
-
 }

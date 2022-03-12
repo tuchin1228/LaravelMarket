@@ -163,6 +163,7 @@
     tinymce.init({
         selector: 'textarea',
         plugins: 'image code',
+        document_base_url: "storage/uploads/",
         min_height: 500,
         toolbar: [{
                 name: 'history',

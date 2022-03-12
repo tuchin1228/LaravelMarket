@@ -148,7 +148,9 @@ class News extends Controller
         $deleteId = $req->deleteId;
         Storage::deleteDirectory("/public/news/$deleteId");
 
-        $result = DB::table('articles')->where('article_id', $req->deleteId)->delete();
+        DB::table('articles')->where('article_id', $req->deleteId)->delete();
+        DB::table('image_list')->where('article_id', $req->deleteId)->delete();
+
 
         return redirect()->route('News');
 
