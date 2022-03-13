@@ -65,6 +65,14 @@
                         <div class="menu-title">關於我們</div>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('AboutImageNone')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">圖片管理</div>
+                    </a>
+                </li>
+
                 <li class="menu-label">最新公告相關</li>
                 <li>
                     <a href="{{route('News')}}">

@@ -211,10 +211,10 @@
 <script>
     const about_id = "{{$about->about_id }}";
     // $("input[name='about_id']").val(about_id)
-    // const timestamp = new Date
-    // const date =
-    //     `${timestamp.getFullYear()}-${(timestamp.getMonth()+1)>9?timestamp.getMonth()+1:'0'+ (timestamp.getMonth()+1)}-${timestamp.getDate()}`
-    // console.log(date);
+    const timestamp = new Date();
+    const date =
+        `${timestamp.getFullYear()}-${(timestamp.getMonth()+1)>9?timestamp.getMonth()+1:'0'+ (timestamp.getMonth()+1)}-${timestamp.getDate()}`
+    console.log(date);
 
     $("input#formFile").change(function () {
 
@@ -260,7 +260,7 @@
         // toolbar: 'undo redo | link image | code',
         image_title: true,
         // automatic_uploads: true,
-        images_upload_url: `../api/uploadAboutimage/${about_id}`,
+        images_upload_url: `../../api/uploadAboutimage/${about_id}`,
         file_picker_types: 'image',
         file_picker_callback: function (cb, value, meta) {
             console.log('file_picker_callback');

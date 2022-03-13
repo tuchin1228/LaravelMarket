@@ -20,7 +20,6 @@ class About extends Controller
     {
 
         return view('About.AddAbout');
-
     }
 
     //新增品牌介紹圖片
@@ -38,7 +37,6 @@ class About extends Controller
             ]);
 
             return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/about/$about_id/$filename"];
-
         }
     }
 
@@ -75,7 +73,6 @@ class About extends Controller
                                     WHERE about_id = $about_id");
         $data['about'] = $about[0];
         return view('About.EditAbout', $data);
-
     }
 
     public function Edit_About(Request $req)
@@ -99,7 +96,6 @@ class About extends Controller
                 ->where('about_id', $about_id)
                 ->update($data);
             return redirect()->route('About');
-
         } else {
 
             Storage::delete('/public/HomeAbout/' . $about_id . '/' . $req->filename);
@@ -119,7 +115,6 @@ class About extends Controller
                 ->where('about_id', $about_id)
                 ->update($data);
             return redirect()->route('About');
-
         }
     }
 
@@ -135,12 +130,69 @@ class About extends Controller
             ->delete();
 
         return redirect()->route('About');
-
     }
 
     public function imagenone()
     {
+        //上傳後沒發布的圖片
+        $notitle_images = DB::select("SELECT image_list.* from image_list
+                                      LEFT JOIN about
+                                      ON image_list.about_id = about.about_id
+                                      WHERE image_list.about_id
+                                      NOT IN(SELECT about_id FROM about)
+                                      AND image_list.about_type = 1");
 
+        //更新傳圖未上傳 || 上傳後刪除 (文章內無顯示的圖)
+        $hastitle_images = DB::select("SELECT image_list.*,about.title,about.created_at  FROM image_list
+                                       LEFT JOIN about
+                                       ON image_list.about_id = about.about_id
+                                       WHERE about.content NOT LIKE CONCAT('%', image_list.filename, '%')");
+        return view('About.Imagenone', ['notitle_images' => $notitle_images, 'hastitle_images' => $hastitle_images]);
     }
 
+    public function deletenotuse(Request $req)
+    {
+        if (!isset($req->type)) {
+            return redirect()->route('AboutImageNone');
+        }
+
+        if ($req->type == 1) {
+            $notitle_images = DB::select("SELECT image_list.* from image_list
+                                          LEFT JOIN about
+                                          ON image_list.about_id = about.about_id
+                                          WHERE image_list.about_id
+                                          NOT IN(SELECT about_id FROM about)
+                                          AND image_list.about_type = 1");
+            foreach ($notitle_images as $image) {
+                Storage::delete("/public/about/$image->about_id/$image->filename");
+                $fileInFolder = Storage::allFiles("/public/about/$image->about_id/$image->filename");
+                if (empty($fileInFolder)) {
+                    Storage::deleteDirectory("/public/about/$image->about_id");
+                }
+
+                DB::table('image_list')
+                    ->where('about_id', $image->about_id)
+                    ->where('filename', $image->filename)
+                    ->delete();
+            }
+            return redirect()->route('AboutImageNone');
+        } else {
+            $hastitle_images = DB::select("SELECT image_list.*,about.title,about.created_at  FROM image_list
+                                           LEFT JOIN about
+                                           ON image_list.about_id = about.about_id
+                                           WHERE about.content NOT LIKE CONCAT('%', image_list.filename, '%')");
+            foreach ($hastitle_images as $image) {
+                Storage::delete("/public/about/$image->about_id/$image->filename");
+                $fileInFolder = Storage::allFiles("/public/about/$image->about_id");
+                if (empty($fileInFolder)) {
+                    Storage::deleteDirectory("/public/about/$image->about_id");
+                }
+                DB::table('image_list')
+                    ->where('about_id', $image->about_id)
+                    ->where('filename', $image->filename)
+                    ->delete();
+            }
+            return redirect()->route('AboutImageNone');
+        }
+    }
 }

@@ -207,7 +207,7 @@ class News extends Controller
                               WHERE articles.content NOT LIKE CONCAT('%', image_list.filename, '%')");
             foreach ($hastitle_images as $image) {
                 Storage::delete("/public/uploads/$image->article_id/$image->filename");
-                $fileInFolder = Storage::allFiles("/public/uploads/$image->article_id/$image->filename");
+                $fileInFolder = Storage::allFiles("/public/uploads/$image->article_id");
                 if (empty($fileInFolder)) {
                     Storage::deleteDirectory("/public/uploads/$image->article_id");
                 }
