@@ -27,41 +27,41 @@
         <form class="w-3/5 mx-auto" method="POST" action="{{route('UploadAbout')}}" enctype="multipart/form-data">
             @csrf
             <div>
-                <label for="formFile" class="form-label mb-0 mt-2">標題</label><br>
+                <label for="title" class="form-label mb-0 mt-2">標題</label><br>
 
                 <input type="text" name="title" class="form-control my-2" value="{{old('title')}}" required id="title"
                     placeholder="標題">
             </div>
             <div>
-                <label for="formFile" class="form-label mb-0 mt-2">首頁標題</label><br>
+                <label for="subtitle" class="form-label mb-0 mt-2">首頁標題</label><br>
 
                 <input type="text" name="subtitle" class="form-control my-2" value="{{old('subtitle')}}" required
                     id="subtitle" placeholder="首頁標題">
             </div>
             <div>
-                <label for="formFile" class="form-label mb-0 mt-2">首頁簡介</label><br>
+                <label for="intro" class="form-label mb-0 mt-2">首頁簡介</label><br>
                 <input id="intro" class="form-control my-2" name="intro" value="{{old('intro')}}" />
 
             </div>
             <div>
-                <label for="formFile" class="form-label mb-0 mt-3">內容</label><br>
+                <label for="mytextarea" class="form-label mb-0 mt-3">內容</label><br>
                 <textarea id="mytextarea" name="content">{{old('content')}}</textarea>
 
             </div>
             <div>
-                <label for="formFile" class="form-label mb-0 mt-2">連結名稱</label><br>
+                <label for="linkName" class="form-label mb-0 mt-2">連結名稱</label><br>
 
                 <input type="text" name="linkName" class="form-control my-2" value="{{old('linkName')}}" required
                     id="linkName" placeholder="連結名稱">
             </div>
             <div>
-                <label for="formFile" class="form-label mb-0 mt-2">連結</label><br>
+                <label for="link" class="form-label mb-0 mt-2">連結</label><br>
 
                 <input type="text" name="link" class="form-control my-2" value="{{old('link')}}" required id="link"
                     placeholder="連結名稱">
             </div>
             <div>
-                <label for="formFile" class="form-label mb-0 mt-2">排序</label><br>
+                <label for="sort" class="form-label mb-0 mt-2">排序</label><br>
 
                 <input type="text" name="sort" class="form-control my-2" value="{{old('sort')}}" required id="sort"
                     placeholder="排序">
