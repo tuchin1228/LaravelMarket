@@ -4,6 +4,7 @@ use App\Http\Controllers\About;
 use App\Http\Controllers\CarouselApi;
 use App\Http\Controllers\News;
 use App\Http\Controllers\NewsApi;
+use App\Http\Controllers\AboutApi;
 use App\Http\Controllers\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,10 +31,34 @@ Route::prefix('Carousel')->group(function () {
 
 });
 
+Route::prefix('About')->group(function () {
+
+    //取得顯示首頁的關於我們
+    Route::get('/showHomeAbout', [AboutApi::class, 'showHomeAbout'])->name('GetAbout');
+
+    
+    //關於我們頁面(所有關於我們)
+    Route::get('/GetAbout', [AboutApi::class, 'getabout'])->name('GetAbout');
+
+    
+
+});
+
 Route::prefix('News')->group(function () {
 
     //取得最新兩則新聞
     Route::get('/GetTwoNews', [NewsApi::class, 'twonews'])->name('GetTwoNews');
+
+    //最新消息頁面(所有消息分類+所有消息)
+    Route::get('/GetNews', [NewsApi::class, 'getnews'])->name('GetNews');
+
+    
+    //最新消息頁面(所有消息分類+特定消息)
+    Route::get('/GetNews/{id}', [NewsApi::class, 'getSpecificNews'])->name('GetSpecificNews');
+
+    //最新消息詳細內容(id=>categoryId)
+    Route::get('/GetNews/{id}/{articleId}', [NewsApi::class, 'getNewsDetail'])->name('GetNewsDetail');
+
 
 });
 
