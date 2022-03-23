@@ -5,6 +5,7 @@ use App\Http\Controllers\Carousel;
 use App\Http\Controllers\News;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\User;
+use App\Http\Controllers\Contact;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -273,5 +274,44 @@ Route::prefix('Product')->group(function () {
 
     // //加購產品指定主檔
     // Route::post('/assignProduct', [Product::class, 'product_additional_assign'])->name('ProductAdditionalAssign');
+
+});
+
+
+
+// 聯絡我們
+Route::prefix('Contact')->group(function () { 
+
+    
+    //顯示所有聯絡我們
+    Route::get('/contact', [Contact::class, 'contact'])->name('Contact');
+    
+    
+    //顯示指定狀態聯絡我們
+    Route::get('/contact/{status}', [Contact::class, 'contact_status'])->name('ContactStatus');
+    
+    
+    //搜尋聯絡我們
+    Route::get('/contactsearch/{keyword}', [Contact::class, 'contact_search'])->name('ContactSearch');
+    
+    //更新聯繫資訊狀態與備註
+    Route::post('/contact_update', [Contact::class, 'contact_update'])->name('ContactUpdate');
+
+    
+    //刪除聯繫資訊
+    Route::post('/contact_delete', [Contact::class, 'contact_delete'])->name('ContactDelete');
+    
+    //聯絡我們分類頁面
+    Route::get('/category', [Contact::class, 'contact_category'])->name('ContactCategory');
+    
+    //新增聯絡我們分類
+    Route::post('/add_category', [Contact::class, 'category_add'])->name('AddContactCategory');
+
+    //更新聯絡我們分類
+    Route::post('/edit_category', [Contact::class, 'category_edit'])->name('EditContactCategory');
+
+    
+    //刪除聯絡我們分類
+    Route::post('/delete_category', [Contact::class, 'category_delete'])->name('DeleteContactCategory');
 
 });

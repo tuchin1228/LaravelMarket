@@ -6,6 +6,7 @@ use App\Http\Controllers\News;
 use App\Http\Controllers\NewsApi;
 use App\Http\Controllers\AboutApi;
 use App\Http\Controllers\Product;
+use App\Http\Controllers\ContactApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,6 +60,20 @@ Route::prefix('News')->group(function () {
     //最新消息詳細內容(id=>categoryId)
     Route::get('/GetNews/{id}/{articleId}', [NewsApi::class, 'getNewsDetail'])->name('GetNewsDetail');
 
+
+});
+
+
+Route::prefix('Contact')->group(function () {
+
+    //取得問題分類
+    Route::get('/GetContactCategry', [ContactApi::class, 'GetContactCategry'])->name('GetContactCategry');
+
+    //取得問題分類
+    Route::post('/submitContact', [ContactApi::class, 'submitContact'])->name('SubmitContact');
+
+    
+    
 
 });
 

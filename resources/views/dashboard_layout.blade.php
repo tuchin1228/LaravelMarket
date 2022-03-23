@@ -6,28 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {{-- <title>Document</title> --}}
-    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <!--favicon-->
-    <link rel="icon" href="{{asset('assets/images/favicon-32x32.png')}}" type="image/png" />
+    <link rel="icon" href="{{ asset('assets/images/favicon-32x32.png') }}" type="image/png" />
     <!--plugins-->
-    <link href="{{asset('assets/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
-    <link href="{{asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
-    <link href="{{asset('assets/plugins/metismenu/css/metisMenu.min.css')}}" rel="stylesheet" />
+    <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
     <!-- loader-->
-    <link href="{{asset('assets/css/pace.min.css')}}" rel="stylesheet" />
-    <script src="{{asset('assets/js/pace.min.js')}}"></script>
+    <link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet" />
+    <script src="{{ asset('assets/js/pace.min.js') }}"></script>
     <!-- Bootstrap CSS -->
-    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link href="{{asset('assets/css/app.css')}}" rel="stylesheet">
-    <link href="{{asset('assets/css/icons.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
     <!-- Theme Style CSS -->
-    <link rel="stylesheet" href="{{asset('assets/css/dark-theme.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/css/semi-dark.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/css/header-colors.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/dark-theme.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/semi-dark.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/header-colors.css') }}" />
 
     @yield('head')
 </head>
@@ -52,21 +52,21 @@
             <ul class="metismenu" id="menu">
                 <li class="menu-label">版型相關</li>
                 <li>
-                    <a href="{{route('Carousel')}}">
+                    <a href="{{ route('Carousel') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">輪播設定</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('About')}}">
+                    <a href="{{ route('About') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">關於我們</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('AboutImageNone')}}">
+                    <a href="{{ route('AboutImageNone') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">圖片管理</div>
@@ -75,21 +75,21 @@
 
                 <li class="menu-label">最新公告相關</li>
                 <li>
-                    <a href="{{route('News')}}">
+                    <a href="{{ route('News') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">最新消息</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('CategoryNews')}}">
+                    <a href="{{ route('CategoryNews') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">最新消息分類管理</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('ImageNone')}}">
+                    <a href="{{ route('ImageNone') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">圖片管理</div>
@@ -98,7 +98,7 @@
 
                 <li class="menu-label">會員系統</li>
                 <li>
-                    <a href="{{route('User')}}">
+                    <a href="{{ route('User') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">會員管理</div>
@@ -106,35 +106,35 @@
                 </li>
                 <li class="menu-label">賣場相關</li>
                 <li>
-                    <a href="{{route('ProductCategory')}}">
+                    <a href="{{ route('ProductCategory') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">商品類別管理</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('ProductTag')}}">
+                    <a href="{{ route('ProductTag') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">商品標籤管理</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('AllProduct')}}">
+                    <a href="{{ route('AllProduct') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">所有商品</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('ProductImageNone')}}">
+                    <a href="{{ route('ProductImageNone') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">圖片管理</div>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('ProductAdditionalPage')}}">
+                    <a href="{{ route('ProductAdditionalPage') }}">
                         <div class="parent-icon"><i class='bx bx-cookie'></i>
                         </div>
                         <div class="menu-title">加購品</div>
@@ -148,6 +148,21 @@
                     </a>
                 </li>
 
+                <li class="menu-label">聯絡相關</li>
+                <li>
+                    <a href="{{ route('ContactCategory') }}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">問題分類</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('Contact') }}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">所有聯繫</div>
+                    </a>
+                </li>
                 {{-- <li>
                     <a href="javascript:;" class="has-arrow">
                         <div class="parent-icon"><i class='bx bx-home-circle'></i>
@@ -1014,15 +1029,15 @@
 
 
 
-    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <!--plugins-->
-    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
-    <script src="{{asset('assets/js/axios.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/simplebar/js/simplebar.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/metismenu/js/metisMenu.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/axios.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/metismenu/js/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
     <!--app JS-->
-    <script src="{{asset('assets/js/app.js')}}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
     @yield('script')
 
 </body>
