@@ -7,6 +7,7 @@ use App\Http\Controllers\NewsApi;
 use App\Http\Controllers\AboutApi;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\ContactApi;
+use App\Http\Controllers\ProductApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,19 @@ Route::prefix('Contact')->group(function () {
 
     
     
+
+});
+
+
+
+Route::prefix('Product')->group(function () {
+
+   //取得所有商品分類+商品
+   Route::get('/', [ProductApi::class, 'index'])->name('ProductIndex');
+   
+   //取得指定商品分類+商品
+   Route::get('/{categoryId}', [ProductApi::class, 'GetProductByCategory'])->name('GetProductByCategory');
+
 
 });
 

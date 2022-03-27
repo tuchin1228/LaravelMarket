@@ -180,7 +180,7 @@
                                                 value="{{old('originPrice') ? old('originPrice') : $productDetail->originPrice }}">
                                         </div>
                                         <div class="col-6 my-2">
-                                            <label for="">特價</label> <input type="number" name="salePrice"
+                                            <label for="">特價</label> <input type="number" name="salePrice" required
                                                 class="form-control my-2"
                                                 value="{{old('salePrice') ? old('salePrice') : $productDetail->salePrice }}">
                                         </div>

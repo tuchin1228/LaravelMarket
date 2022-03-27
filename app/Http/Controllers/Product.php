@@ -445,7 +445,8 @@ class Product extends Controller
         $data['product'] = $product[0];
 
         $data['productDetails'] = DB::select("SELECT * FROM product_detail
-                                     WHERE productId = '$productId'");
+                                     WHERE productId = '$productId'
+                                     ORDER BY sort desc");
 
         $data['productImages'] = DB::select("SELECT * FROM image_list
                                      WHERE product_id = '$productId'
