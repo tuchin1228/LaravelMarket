@@ -83,10 +83,13 @@ Route::prefix('Contact')->group(function () {
 Route::prefix('Product')->group(function () {
 
    //取得所有商品分類+商品
-   Route::get('/', [ProductApi::class, 'index'])->name('ProductIndex');
+   Route::get('/category', [ProductApi::class, 'index'])->name('ProductIndex');
    
    //取得指定商品分類+商品
-   Route::get('/{categoryId}', [ProductApi::class, 'GetProductByCategory'])->name('GetProductByCategory');
+   Route::get('/category/{categoryId}', [ProductApi::class, 'GetProductByCategory'])->name('GetProductByCategory');
+
+   //取得指定商品分類+商品
+   Route::get('/product/{productId}', [ProductApi::class, 'GetProduct'])->name('GetProduct');
 
 
 });

@@ -74,6 +74,7 @@ class News extends Controller
 
             return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/uploads/$article_id/$filename"];
 
+
         }
     }
 

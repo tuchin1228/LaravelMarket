@@ -141,6 +141,7 @@
             <h5 class="col-3"><strong>　　成本</strong>：${{$productDetail->cost}}</h5>
             <h5 class="col-3"><strong>　　數量</strong>：{{$productDetail->quantity}}</h5>
             <h5 class="col-3"><strong>　排序號</strong>：{{$productDetail->sort}}</h5>
+            <h5 class="col-3"><strong>　購買量</strong>：{{$productDetail->max_quantity}}</h5>
             <h5 class="col-3"><strong>是否啟用</strong>：
                 @if ($productDetail->enable ==1) <span class="text-success fw-bold">啟用中</span>
                 @else <span class="text-danger fw-bold">未啟用</span>
@@ -193,6 +194,10 @@
                                             <label for="">排序號</label> <input type="number" name="sort"
                                                 class="form-control my-2"
                                                 value="{{old('sort') ? old('sort') : $productDetail->sort}}">
+                                        </div>
+                                        <div class="col-6 my-2">
+                                            <label for="">每人最大購買量</label> <input type="number" name="max_quantity" 
+                                                class="form-control my-2" value="{{old('max_quantity') ? old('max_quantity')  : $productDetail->max_quantity}}">
                                         </div>
                                         <div class="col-6 my-2">
                                             <label for="" class="d-block">是否啟用</label>
@@ -289,6 +294,10 @@
                             <div class="col-6 my-2">
                                 <label for="">排序號</label> <input type="number" name="sort" class="form-control my-2"
                                     value="{{old('sort')}}">
+                            </div>
+                            <div class="col-6 my-2">
+                                <label for="">每人最大購買量</label> <input type="number" name="max_quantity" 
+                                    class="form-control my-2" value="{{old('max_quantity')}}">
                             </div>
                             <div class="col-6 my-2">
                                 <label for="" class="d-block">是否啟用</label>

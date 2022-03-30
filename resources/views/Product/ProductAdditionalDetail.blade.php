@@ -92,7 +92,21 @@
                         0) selected @endif>未啟用</option>
                 </select>
             </div>
-
+            <div class="col-6">
+                <label for="" class="d-block mt-4">是否套用所有商品</label>
+                <select class="form-select  my-2 " name="forAll" id="">
+                    <option value="1" @if( empty(old('forAll')) || (!empty(old('forAll')) && old('forAll')==1) ||
+                        $productAdditional->forAll == 1 )
+                        selected @endif>是</option>
+                    <option value="0" @if(!empty(old('forAll') && old('forAll')==0) || $productAdditional->forAll ==
+                        0) selected @endif>否</option>
+                </select>
+            </div>
+            <div class="col-6">
+                <label for="" class="d-block mt-4">全商品加購價(套用所有商品時才會生效)</label>
+                <input type="number" name="forAllPrice" class="form-control my-2"
+                value="{{old('forAllPrice') ? old('forAllPrice') :  $productAdditional->forAllPrice}}" id="forAllPrice" placeholder="全商品加購價">
+            </div>
             <div class="col-6 ">
                 <label for="formFile" class="form-label mt-4">上傳圖片</label>
                 {{-- this.form.submit() --}}
@@ -106,16 +120,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-6">
-                <label for="" class="d-block mt-4">是否套用所有商品</label>
-                <select class="form-select  my-2 " name="forAll" id="">
-                    <option value="1" @if( empty(old('forAll')) || (!empty(old('forAll')) && old('forAll')==1) ||
-                        $productAdditional->forAll == 1 )
-                        selected @endif>是</option>
-                    <option value="0" @if(!empty(old('forAll') && old('forAll')==0) || $productAdditional->forAll ==
-                        0) selected @endif>否</option>
-                </select>
-            </div>
+          
             <input type="text" hidden name="productAdditionId" value="{{$productAdditional->productAdditionId}}">
             {{-- <div class="col-12 mx-auto">
                 <hr />
@@ -362,7 +367,7 @@
                                     id="product${item.productId}" />
                             </div>
                              <h5 class="col-3"><label for="product${item.productId}">${item.productName}</label></h5>
-                             <h5 class="col-3 text-center">${item.productCateId ? item.articles_cate_title : ''}</h5>
+                             <h5 class="col-3 text-center">${item.productCateId ? item.productCateName : ''}</h5>
                              <h5 class="col-3">
                                 <input type="number" class="form-control my-2 text-center" required
                                     name="addition_price${item.productId}" value="" /></h5>

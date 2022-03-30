@@ -466,6 +466,7 @@ class Product extends Controller
         $data['sort'] = $req->sort;
         $data['enable'] = $req->enable;
         $data['productId'] = $req->productId;
+        $data['max_quantity'] = empty($req->max_quantity) ? null : $req->max_quantity;
         $data['productDetailId'] = time();
 
         DB::table('product_detail')
@@ -487,6 +488,7 @@ class Product extends Controller
         $data['cost'] = $req->cost;
         $data['sort'] = $req->sort;
         $data['enable'] = $req->enable;
+        $data['max_quantity'] = empty($req->max_quantity) ? null : $req->max_quantity;
         $productId = $req->productId;
         $productDetailId = $req->productDetailId;
         DB::table('product_detail')
@@ -557,6 +559,8 @@ class Product extends Controller
             $data['sort'] = $req->sort;
             $data['enable'] = $req->enable;
             $data['forAll'] = $req->forAll;
+            $data['forAllPrice'] = $req->forAllPrice ? $req->forAllPrice : 0;
+
             $productAdditionId = time();
             $data['productAdditionId'] = $productAdditionId;
 
@@ -595,6 +599,8 @@ class Product extends Controller
             $data['sort'] = $req->sort;
             $data['enable'] = $req->enable;
             $data['forAll'] = $req->forAll;
+            $data['forAllPrice'] = $req->forAllPrice ? $req->forAllPrice : 0;
+
             $productAdditionId = $req->productAdditionId;
 
             Storage::deleteDirectory("/public/additional_product/$productAdditionId");
@@ -621,6 +627,9 @@ class Product extends Controller
             $data['sort'] = $req->sort;
             $data['enable'] = $req->enable;
             $data['forAll'] = $req->forAll;
+            $data['forAllPrice'] = $req->forAllPrice ? $req->forAllPrice : 0;
+
+
             $productAdditionId = $req->productAdditionId;
 
             DB::table('product_addtional')
@@ -679,7 +688,7 @@ class Product extends Controller
         if (!empty($keyword) && !empty($productAdditionId)) {
             $keyword = $req->keyword;
             $SearchProducts = DB::select("SELECT A.* , B.* ,C.addition_price,C.productAdditionId FROM product AS A
-                                          LEFT JOIN articles_category AS B
+                                          LEFT JOIN product_category AS B
                                           ON A.productCateId = B.id
                                           LEFT JOIN product_addtional_detail AS C
                                           ON A.productId = C.productId
@@ -752,6 +761,9 @@ class Product extends Controller
         // return $req;
 
         $productAdditionId = $req->productAdditionId;
+        
+        Storage::deleteDirectory("/public/additional_product/$productAdditionId");
+
         DB::table('product_addtional_detail')
             ->where('productAdditionId', $productAdditionId)
             ->delete();

@@ -109,6 +109,11 @@
                     <option value="0" @if(!empty(old('forAll') && old('forAll')==0)) selected @endif>否</option>
                 </select>
             </div>
+            <div class="col-6">
+                <label for="" class="d-block mt-4">全商品加購價(套用所有商品時才會生效)</label>
+                <input type="number" name="forAllPrice" class="form-control my-2"
+                value="{{old('forAllPrice') }}" id="forAllPrice" placeholder="全商品加購價">
+            </div>
             {{-- <div class="col-12 mx-auto">
                 <hr />
             </div> --}}

@@ -137,6 +137,7 @@
         </select>
         <a href="{{route('AddNews')}}" class="btn btn-primary">新增消息</a>
     </div>
+    
     <div>
         @foreach ($articles as $article)
         <article class="py-2 border-bottom d-flex align-items-start">

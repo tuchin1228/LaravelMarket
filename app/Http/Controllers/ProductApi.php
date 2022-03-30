@@ -67,4 +67,37 @@ class ProductApi extends Controller
 
         return ['success' => true, 'category' => $category, 'product' => $product, 'productImages' => $productImages];
     }
+
+    public function GetProduct($productId)
+    {
+
+        $product = DB::select("SELECT * FROM product AS A
+                                LEFT JOIN product_tag  AS B
+                                ON A.productTag = B.id
+                                WHERE enable = 1
+                                AND productId = '$productId'");
+
+        $productDetail = DB::select("SELECT * FROM product_detail
+                                     WHERE enable = 1
+                                     AND productId = '$productId'
+                                     ORDER BY sort desc ");
+
+        $productAddition = DB::select("SELECT * FROM product_addtional AS A
+                                       LEFT JOIN product_addtional_detail AS B
+                                       ON A.productAdditionId = B.productAdditionId
+                                       WHERE A.enable = 1
+                                       AND now() >= A.startTime
+                                       AND now() < A.endTime
+                                       AND A.quantity > 0
+                                       AND (B.productId = '$productId' || A.forAll = 1)
+                                       ORDER BY A.sort desc ");      
+
+        $productImages = DB::select("SELECT * FROM image_list AS A
+                                    LEFT JOIN product AS B
+                                    ON A.product_id = B.productId
+                                    where product_type = 'product'
+                                    AND B.productId  = '$productId'");
+
+        return ['success' => true, 'product' => !empty($product) ? $product[0] : null, 'productDetail' => $productDetail , 'productAddition'=>$productAddition , 'productImages' => $productImages];
+    }
 }
