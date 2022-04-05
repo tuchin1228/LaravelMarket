@@ -179,7 +179,7 @@
                         <h6 class="text-start fw-normal ">{{$User->email}}</h6>
                         <hr />
                         <h5 class="fw-bold text-start">會員地址</h5>
-                        <h6 class="text-start fw-normal ">{{$User->county.$User->area.$User->address}}</h6>
+                        <h6 class="text-start fw-normal ">{{$User->country.$User->area.$User->address}}</h6>
                         <hr />
                     </div>
                     <div class="modal-footer">
@@ -264,7 +264,7 @@
                     <h6 class="text-start">{{$User->email}}</h6>
                     <hr />
                     <h5 class="fw-bold text-start">會員地址</h5>
-                    <h6 class="text-start">{{$User->county.$User->area.$User->address}}</h6>
+                    <h6 class="text-start">{{$User->country.$User->area.$User->address}}</h6>
                     <hr />
                 </div>
                 <div class="modal-footer">

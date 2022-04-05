@@ -33,7 +33,7 @@ class User extends Controller
             ->where('id', $req->editId)
             ->update([
                 'email' => $req->email ? $req->email : null,
-                'county' => $req->county ? $req->county : null,
+                'country' => $req->country ? $req->country : null,
                 'area' => $req->area ? $req->area : null,
                 'address' => $req->address ? $req->address : null,
             ]);

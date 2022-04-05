@@ -45,8 +45,8 @@
 
 
                     <div class="col-12">
-                        <label for="county" class="form-label">會員地址</label>
-                        <select id="county" class="form-select my-1" value="" value="{{$User->county}}" name="county">
+                        <label for="country" class="form-label">會員地址</label>
+                        <select id="country" class="form-select my-1" value="" value="{{$User->country}}" name="country">
                         </select>
                         <select id="area" class="form-select my-1" value="" name="area" value="{{$User->area}}">
                         </select>
@@ -60,7 +60,7 @@
                     <h6 class="text-danger text-center">{{$error}}</h6>
                     @endforeach
                     @endif
-                    <input type="text" hidden name="oldCounty" value="{{$User->county}}">
+                    <input type="text" hidden name="oldcountry" value="{{$User->country}}">
                     <input type="text" hidden name="oldArea" value="{{$User->area}}">
                     <input type="text" hidden name="editId" value="{{$User->id}}">
                     <div class="col-12 text-center">
@@ -79,23 +79,23 @@
     $.getJSON("{{asset('assets/js/taiwan_districts.json')}}", function (data) {
         console.log(data);
         taianData = data
-        // let county =
+        // let country =
         let htmlTemplate = ``;
         for (let i = 0; i < data.length; i++) {
             htmlTemplate += `
                 <option value="${data[i].name}">${data[i].name}</option>
             `
         }
-        $('#county').html(htmlTemplate)
+        $('#country').html(htmlTemplate)
         let areaTemplate = ``;
         for (let j = 0; j < data[0].districts.length; j++) {
             areaTemplate += `<option>${data[0].districts[j].name}</option>`
         }
         $('#area').html(areaTemplate)
-        // console.log($('input[name="oldCounty"]').val(), $('input[name="oldArea"]').val());
+        // console.log($('input[name="oldcountry"]').val(), $('input[name="oldArea"]').val());
 
-        if ($('input[name="oldCounty"]').val()) {
-            $('#county').val($('input[name="oldCounty"]').val())
+        if ($('input[name="oldcountry"]').val()) {
+            $('#country').val($('input[name="oldcountry"]').val())
             UpdateArea()
         }
         if ($('input[name="oldArea"]').val()) {
@@ -106,7 +106,7 @@
     const UpdateArea = () => {
         let htmlTemplate = ``;
         for (let i = 0; i < taianData.length; i++) {
-            if (taianData[i].name == $('#county').val()) {
+            if (taianData[i].name == $('#country').val()) {
                 for (let j = 0; j < taianData[i].districts.length; j++) {
                     htmlTemplate += `<option value="${taianData[i].districts[j].name}">${taianData[i].districts[j].name}
                     </option>`
@@ -119,12 +119,12 @@
     }
 
 
-    $('#county').change(function () {
+    $('#country').change(function () {
         console.log('taianData', taianData);
-        console.log($('#county').val());
+        console.log($('#country').val());
         let htmlTemplate = ``;
         for (let i = 0; i < taianData.length; i++) {
-            if (taianData[i].name == $('#county').val()) {
+            if (taianData[i].name == $('#country').val()) {
                 for (let j = 0; j < taianData[i].districts.length; j++) {
                     htmlTemplate += `<option value="${taianData[i].districts[j].name}">${taianData[i].districts[j].name}
                     </option>`

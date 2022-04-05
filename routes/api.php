@@ -8,6 +8,7 @@ use App\Http\Controllers\AboutApi;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\ContactApi;
 use App\Http\Controllers\ProductApi;
+use App\Http\Controllers\UserApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,23 @@ Route::prefix('Contact')->group(function () {
 
     //取得問題分類
     Route::post('/submitContact', [ContactApi::class, 'submitContact'])->name('SubmitContact');
+
+});
+
+Route::prefix('User')->group(function () {
+
+    
+    //登入
+    Route::post('/login', [UserApi::class, 'login'])->name('Login');
+
+    //註冊
+    Route::post('/register', [UserApi::class, 'register'])->name('Register');
+
+    //Line會員註冊
+    Route::post('/lineregister', [UserApi::class, 'LineRegister'])->name('LineRegister');
+
+    //連結Line會員
+    Route::post('/linkline', [UserApi::class, 'Linkline'])->name('Linkline');
 
     
     
