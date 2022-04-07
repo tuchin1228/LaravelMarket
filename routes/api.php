@@ -91,7 +91,11 @@ Route::prefix('User')->group(function () {
     //連結Line會員
     Route::post('/linkline', [UserApi::class, 'Linkline'])->name('Linkline');
 
-    
+    //取得會員資訊
+    Route::post('/userinfo', [UserApi::class, 'userinfo'])->name('Userinfo');
+
+    //編輯會員資訊
+    Route::post('/edit_userinfo', [UserApi::class, 'edit_userinfo'])->name('EditUserinfo');
     
 
 });

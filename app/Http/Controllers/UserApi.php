@@ -27,7 +27,7 @@ class UserApi extends Controller
 
         if (!empty($user)) {
             $token =  $this->create_uuid();
-            DB::table('user')->where('id',$user[0]->id)->update(['token'=>$token]);
+            DB::table('user')->where('id', $user[0]->id)->update(['token' => $token]);
             return ['success' => true, 'msg' => '登入成功', 'userId' => $user[0]->id, 'token' => $token];
         } else {
             return ['success' => false, 'msg' => '登入失敗'];
@@ -108,6 +108,56 @@ class UserApi extends Controller
             return ['success' => false, 'errorStauts' => 2, 'msg' => '會員認證錯誤'];
         }
     }
+
+
+
+    public function userinfo(Request $req)
+    {
+
+        $userId = $req->userId;
+        $token = $req->token;
+        $User = DB::select("SELECT * FROM user
+                                 WHERE id = '$userId'
+                                 LIMIT 1");
+        if (empty($User)) {
+            return ['success' => false, 'errorStauts' => 1, 'msg' => '無此會員'];
+        } else if ($User[0]->token !== $token) {
+            return ['success' => false, 'errorStauts' => 1, 'msg' => '會員認證錯誤'];
+        } else {
+            return ['success' => true, 'user' => $User[0], 'msg' => '成功取的會員資訊'];
+        }
+    }
+
+
+    public function edit_userinfo(Request $req)
+    {
+        // return $req;
+
+        $name = $req->name ? $req->name : null ;
+        $email = $req->email ? $req->email : null ;
+        $address = $req->address ? $req->address : null ;
+        $CityName = $req->CityName ? $req->CityName : null ;
+        $AreaName = $req->AreaName ? $req->AreaName : null ;
+        $userId = $req->userId;
+        $token = $req->token;
+        $User = DB::select("SELECT * FROM user
+                            WHERE id = '$userId'
+                            AND token = '$token'");
+        if (empty($User)) {
+            return ['success' => false, 'errorStauts' => 1, 'msg' => '會員認證錯誤'];
+        }
+        DB::table('user')
+            ->where('id',$userId)
+            ->update([
+                'name' => $name,
+                'email' => $email,
+                'address' => $address,
+                'country' => $CityName,
+                'area' => $AreaName,
+            ]);
+        return ['success' => true, 'msg' => '會員資訊更新成功'];
+    }
+
 
     public static function create_uuid($prefix = "")
     {
