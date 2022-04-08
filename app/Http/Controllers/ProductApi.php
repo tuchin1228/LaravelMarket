@@ -88,7 +88,7 @@ class ProductApi extends Controller
                                        WHERE A.enable = 1
                                        AND now() >= A.startTime
                                        AND now() < A.endTime
-                                       AND A.quantity > 0
+                                       AND A.quantity > A.max_quantity
                                        AND (B.productId = '$productId' || A.forAll = 1)
                                        ORDER BY A.sort desc ");      
 
