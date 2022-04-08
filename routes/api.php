@@ -97,7 +97,13 @@ Route::prefix('User')->group(function () {
     //編輯會員資訊
     Route::post('/edit_userinfo', [UserApi::class, 'edit_userinfo'])->name('EditUserinfo');
     
+    //編輯會員密碼
+    Route::post('/edit_password', [UserApi::class, 'edit_password'])->name('EditUserPassword');
 
+    //重設會員密碼
+    Route::post('/reset_password', [UserApi::class, 'reset_password'])->name('ResetUserPassword');
+
+    
 });
 
 

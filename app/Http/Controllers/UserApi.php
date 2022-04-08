@@ -133,11 +133,11 @@ class UserApi extends Controller
     {
         // return $req;
 
-        $name = $req->name ? $req->name : null ;
-        $email = $req->email ? $req->email : null ;
-        $address = $req->address ? $req->address : null ;
-        $CityName = $req->CityName ? $req->CityName : null ;
-        $AreaName = $req->AreaName ? $req->AreaName : null ;
+        $name = $req->name ? $req->name : null;
+        $email = $req->email ? $req->email : null;
+        $address = $req->address ? $req->address : null;
+        $CityName = $req->CityName ? $req->CityName : null;
+        $AreaName = $req->AreaName ? $req->AreaName : null;
         $userId = $req->userId;
         $token = $req->token;
         $User = DB::select("SELECT * FROM user
@@ -147,7 +147,7 @@ class UserApi extends Controller
             return ['success' => false, 'errorStauts' => 1, 'msg' => '會員認證錯誤'];
         }
         DB::table('user')
-            ->where('id',$userId)
+            ->where('id', $userId)
             ->update([
                 'name' => $name,
                 'email' => $email,
@@ -158,6 +158,54 @@ class UserApi extends Controller
         return ['success' => true, 'msg' => '會員資訊更新成功'];
     }
 
+
+    public function edit_password(Request $req)
+    {
+        // return $req;
+        $verify_phone = $req->verify_phone;
+        $newPassword = $req->newPassword;
+        $userId = $req->userId;
+        $token = $req->token;
+        $User = DB::select("SELECT * FROM user
+                            WHERE id = '$userId'
+                            AND token = '$token'");
+        if (empty($User)) {
+            return ['success' => false, 'errorStauts' => 1, 'msg' => '會員認證錯誤'];
+        }
+        if ($User[0]->phone !== $verify_phone) {
+            return ['success' => false, 'errorStauts' => 1, 'msg' => '電話認證錯誤'];
+        }
+        DB::table('user')
+            ->where('id', $userId)
+            ->update([
+                'password' => $newPassword,
+            ]);
+        return ['success' => true, 'msg' => '密碼更新成功'];
+    }
+
+    public function reset_password(Request $req)
+    {
+        // return $req;
+        $verify_phone = $req->verify_phone;
+        $verify_email = $req->verify_email;
+        $newPassword = $req->newPassword;
+        $User = DB::select("SELECT * FROM user
+                            WHERE email = '$verify_email'
+                            AND phone = '$verify_phone'");
+        if (empty($User)) {
+            return ['success' => false, 'errorStauts' => 1, 'msg' => '會員認證錯誤'];
+        }
+        DB::table('user')
+            ->where([
+                ['email', $verify_email],
+                ['phone', $verify_phone],
+            ])
+            ->update([
+                'password' => $newPassword,
+            ]);
+
+        return ['success' => true, 'msg' => '密碼重設成功'];
+    }
 
     public static function create_uuid($prefix = "")
     {
