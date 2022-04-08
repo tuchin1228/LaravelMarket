@@ -82,7 +82,7 @@ class ProductApi extends Controller
                                      AND productId = '$productId'
                                      ORDER BY sort desc ");
 
-        $productAddition = DB::select("SELECT * FROM product_addtional AS A
+        $productAddition = DB::select("SELECT A.*,B.productId,B.addition_price FROM product_addtional AS A
                                        LEFT JOIN product_addtional_detail AS B
                                        ON A.productAdditionId = B.productAdditionId
                                        WHERE A.enable = 1
