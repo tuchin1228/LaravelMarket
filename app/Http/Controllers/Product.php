@@ -61,7 +61,8 @@ class Product extends Controller
         }
         $deleteId = $req->deleteId;
         $exitProduct = DB::select("SELECT * FROM product
-                    WHERE productCateId =  '$deleteId'");
+                    WHERE productCateId =  '$deleteId'
+                    AND delete_at IS NULL");
         if (!empty($exitProduct)) {
             //分類尚有商品不能刪
             return redirect()->route('ProductCategory')->withInput()->withErrors(['deleteError' => '分類尚有商品無法刪除']);
@@ -154,11 +155,14 @@ class Product extends Controller
             $data['products'] = DB::table("product")
                 ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')
                 ->select("product.*", "product_category.productCateName")
+                ->whereNull('product.delete_at')
                 ->orderBY('product.sort', 'desc')->orderBy('product.id', 'desc')
                 ->paginate(5);
         } else {
             $data['selectCategory'] = $category;
-            $data['products'] = DB::table("product")->where('productCateId', $category)
+            $data['products'] = DB::table("product")
+                ->where('productCateId', $category)
+                ->whereNull('product.delete_at')
                 ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')
                 ->select("product.*", "product_category.productCateName")
                 ->orderBY('product.sort', 'desc')->orderBy('product.id', 'desc')
@@ -177,6 +181,7 @@ class Product extends Controller
         $data['products'] = DB::table("product")
             ->leftJoin('product_category', 'product.productCateId', '=', 'product_category.id')
             ->select("product.*", "product_category.productCateName")
+            ->whereNull('product.delete_at')
             ->orderBY('product.sort', 'desc')->orderBy('product.id', 'desc')
             ->where('product.productName', 'LIKE', '%' . $keyword . '%')
 
@@ -202,10 +207,16 @@ class Product extends Controller
 
         DB::table('product_detail')
             ->where('productId', $deleteId)
-            ->delete();
+            ->update([
+                'delete_at' => date('Y-m-d h:i:s', time())
+            ]);
+        // ->delete();
         DB::table('product')
             ->where('productId', $deleteId)
-            ->delete();
+            ->update([
+                'delete_at' => date('Y-m-d h:i:s', time())
+            ]);
+        // ->delete();
 
         return redirect()->back();
     }
@@ -228,7 +239,8 @@ class Product extends Controller
         $data['categories'] = DB::select("SELECT * FROM product_category");
 
         $product = DB::select("SELECT * FROM product
-                                          WHERE productId = '$productId'");
+                                WHERE productId = '$productId'
+                                AND delete_at IS NULL");
         $data['product'] = $product[0];
         return view('Product.EditProduct', $data);
     }
@@ -441,11 +453,13 @@ class Product extends Controller
                                ON A.productCateId = B.id
                                LEFT JOIN product_tag AS C
                                ON A.productTag = C.id
-                               WHERE productId = '$productId'");
+                               WHERE productId = '$productId'
+                               AND A.delete_at IS NULL");
         $data['product'] = $product[0];
 
         $data['productDetails'] = DB::select("SELECT * FROM product_detail
                                      WHERE productId = '$productId'
+                                     AND delete_at IS NULL
                                      ORDER BY sort desc");
 
         $data['productImages'] = DB::select("SELECT * FROM image_list
@@ -506,7 +520,10 @@ class Product extends Controller
         $deleteId = $req->deleteId;
         DB::table('product_detail')
             ->where('productDetailId', $deleteId)
-            ->delete();
+            ->update([
+                'delete_at' => date('Y-m-d h:i:s', time())
+            ]);
+        // ->delete();
         return redirect()->route('ProductDetailPage', ['productId' => $productId]);
     }
 
@@ -514,6 +531,7 @@ class Product extends Controller
     {
 
         $data['productAdditionals'] = DB::table("product_addtional")
+            ->whereNull('delete_at')
             ->orderBY('sort', 'desc')
             ->paginate(5);
 
@@ -523,12 +541,15 @@ class Product extends Controller
     public function product_additional_detail($productAdditionId)
     {
         $productAdditional = DB::select("SELECT *,DATE_FORMAT(startTime, '%Y-%m-%dT%H:%i') AS startTime ,DATE_FORMAT(endTime, '%Y-%m-%dT%H:%i') AS endTime FROM product_addtional
-                                                  WHERE productAdditionId = '$productAdditionId'");
+                                                  WHERE productAdditionId = '$productAdditionId'
+                                                  AND delete_at IS NULL");
 
         $productAdditionalDetail = DB::select("SELECT A.addition_price,A.productAdditionId ,B.*  FROM product_addtional_detail AS A
                                                LEFT JOIN product AS B
                                                ON  A.productId = B.productId
-                                               WHERE A.productAdditionId = '$productAdditionId'");
+                                               WHERE A.productAdditionId = '$productAdditionId'
+                                               AND A.delete_at IS NULL
+                                               AND B.delete_at IS NULL");
 
         if (empty($productAdditional)) {
             return redirect()->back();
@@ -672,7 +693,8 @@ class Product extends Controller
             $SearchProducts = DB::select("SELECT * FROM product AS A
                         LEFT JOIN articles_category AS B
                         ON A.productCateId = B.id
-                        WHERE A.productName LIKE '%$keyword%'");
+                        WHERE A.productName LIKE '%$keyword%'
+                        AND A.delete_at IS NULL");
             return ['success' => true, 'SearchProducts' => $SearchProducts];
         } else {
             return ['success' => false];
@@ -695,7 +717,8 @@ class Product extends Controller
                                           WHERE A.productName LIKE '%$keyword%'
                                           AND (C.productAdditionId != '$productAdditionId'
 										  OR C.productAdditionId IS NULL)
-                                          AND A.enable = 1");
+                                          AND A.enable = 1
+                                          AND A.delete_at IS NULL");
             return ['success' => true, 'SearchProducts' => $SearchProducts];
         } else {
             return ['success' => false];
@@ -725,7 +748,10 @@ class Product extends Controller
         DB::table('product_addtional_detail')
             ->where('productId', $productId)
             ->where('productAdditionId', $productAdditionId)
-            ->delete();
+            ->update([
+                'delete_at' => date('Y-m-d h:i:s', time())
+            ]);
+        // ->delete();
         return redirect()->back();
     }
 
@@ -751,7 +777,10 @@ class Product extends Controller
 
         DB::table('product_addtional_detail')
             ->where('productAdditionId', $productAdditionId)
-            ->delete();
+            ->update([
+                'delete_at' => date('Y-m-d h:i:s', time())
+            ]);
+        // ->delete();
 
         return redirect()->back();
     }
@@ -761,15 +790,21 @@ class Product extends Controller
         // return $req;
 
         $productAdditionId = $req->productAdditionId;
-        
+
         Storage::deleteDirectory("/public/additional_product/$productAdditionId");
 
         DB::table('product_addtional_detail')
             ->where('productAdditionId', $productAdditionId)
-            ->delete();
+            ->update([
+                'delete_at' => date('Y-m-d h:i:s', time())
+            ]);
+        // ->delete();
         DB::table('product_addtional')
             ->where('productAdditionId', $productAdditionId)
-            ->delete();
+            ->update([
+                'delete_at' => date('Y-m-d h:i:s', time())
+            ]);
+        // ->delete();
 
         return redirect()->back();
     }

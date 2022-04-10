@@ -31,6 +31,8 @@ class ProductApi extends Controller
                                 ON A.productId = B.productId
                                 WHERE A.enable = 1
                                 AND B.enable = 1
+                                AND A.delete_at IS NULL
+                                AND B.delete_at IS NULL
                                 GROUP BY A.productId");
 
         $productImages = DB::select("SELECT * FROM image_list
@@ -56,6 +58,8 @@ class ProductApi extends Controller
                                 WHERE A.enable = 1
                                 AND A.productCateId = '$categoryId'
                                 AND B.enable = 1
+                                AND A.delete_at IS NULL
+                                AND B.delete_at IS NULL
                                 GROUP BY A.productId");
 
 
@@ -75,11 +79,13 @@ class ProductApi extends Controller
                                 LEFT JOIN product_tag  AS B
                                 ON A.productTag = B.id
                                 WHERE enable = 1
+                                AND A.delete_at IS NULL
                                 AND productId = '$productId'");
 
         $productDetail = DB::select("SELECT * FROM product_detail
                                      WHERE enable = 1
                                      AND productId = '$productId'
+                                     AND delete_at IS NULL
                                      ORDER BY sort desc ");
 
         $productAddition = DB::select("SELECT A.*,B.productId,B.addition_price FROM product_addtional AS A
@@ -90,6 +96,8 @@ class ProductApi extends Controller
                                        AND now() < A.endTime
                                        AND A.quantity > A.max_quantity
                                        AND (B.productId = '$productId' || A.forAll = 1)
+                                       AND A.delete_at IS NULL
+                                       AND B.delete_at IS NULL
                                        ORDER BY A.sort desc ");      
 
         $productImages = DB::select("SELECT * FROM image_list AS A
