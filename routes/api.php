@@ -103,6 +103,8 @@ Route::prefix('User')->group(function () {
     //重設會員密碼
     Route::post('/reset_password', [UserApi::class, 'reset_password'])->name('ResetUserPassword');
 
+    //登入
+    Route::post('/add_to_cart', [UserApi::class, 'AddToCart'])->name('AddToCart');
     
 });
 
