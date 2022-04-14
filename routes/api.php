@@ -9,6 +9,7 @@ use App\Http\Controllers\Product;
 use App\Http\Controllers\ContactApi;
 use App\Http\Controllers\ProductApi;
 use App\Http\Controllers\UserApi;
+use App\Http\Controllers\CartApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +32,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('Carousel')->group(function () {
     //取得所有輪播
     Route::get('/GetCarousel', [CarouselApi::class, 'index'])->name('CarouselApi');
-
 });
 
 Route::prefix('About')->group(function () {
@@ -39,12 +39,9 @@ Route::prefix('About')->group(function () {
     //取得顯示首頁的關於我們
     Route::get('/showHomeAbout', [AboutApi::class, 'showHomeAbout'])->name('GetAbout');
 
-    
+
     //關於我們頁面(所有關於我們)
     Route::get('/GetAbout', [AboutApi::class, 'getabout'])->name('GetAbout');
-
-    
-
 });
 
 Route::prefix('News')->group(function () {
@@ -55,14 +52,12 @@ Route::prefix('News')->group(function () {
     //最新消息頁面(所有消息分類+所有消息)
     Route::get('/GetNews', [NewsApi::class, 'getnews'])->name('GetNews');
 
-    
+
     //最新消息頁面(所有消息分類+特定消息)
     Route::get('/GetNews/{id}', [NewsApi::class, 'getSpecificNews'])->name('GetSpecificNews');
 
     //最新消息詳細內容(id=>categoryId)
     Route::get('/GetNews/{id}/{articleId}', [NewsApi::class, 'getNewsDetail'])->name('GetNewsDetail');
-
-
 });
 
 
@@ -73,12 +68,11 @@ Route::prefix('Contact')->group(function () {
 
     //取得問題分類
     Route::post('/submitContact', [ContactApi::class, 'submitContact'])->name('SubmitContact');
-
 });
 
 Route::prefix('User')->group(function () {
 
-    
+
     //登入
     Route::post('/login', [UserApi::class, 'login'])->name('Login');
 
@@ -96,32 +90,52 @@ Route::prefix('User')->group(function () {
 
     //編輯會員資訊
     Route::post('/edit_userinfo', [UserApi::class, 'edit_userinfo'])->name('EditUserinfo');
-    
+
     //編輯會員密碼
     Route::post('/edit_password', [UserApi::class, 'edit_password'])->name('EditUserPassword');
 
     //重設會員密碼
     Route::post('/reset_password', [UserApi::class, 'reset_password'])->name('ResetUserPassword');
 
-    //登入
-    Route::post('/add_to_cart', [UserApi::class, 'AddToCart'])->name('AddToCart');
-    
+
+
+    //檢查登入狀態
+    Route::post('/checkAuth', [UserApi::class, 'checkAuth'])->name('CheckAuth');
+});
+
+
+
+
+Route::prefix('Cart')->group(function () {
+
+    //加入購物車
+    Route::post('/add_to_cart', [CartApi::class, 'AddToCart'])->name('AddToCart');
+
+    //取得購物車
+    Route::post('/getcart', [CartApi::class, 'getcart'])->name('GetCart');
+
+    //更改購物車內商品數量
+    Route::post('/setcartproductcount', [CartApi::class, 'SetCartProductCount'])->name('SetCartProductCount');
+
+    //更改購物車內加購品數量
+    Route::post('/setcartproductadditioncount', [CartApi::class, 'SetCartProductAdditionCount'])->name('SetCartProductAdditionCount');
+
+    //刪除購物車內商品
+    Route::post('/removecartproduct', [CartApi::class, 'RemoveCartProduct'])->name('RemoveCartProduct');
 });
 
 
 
 Route::prefix('Product')->group(function () {
 
-   //取得所有商品分類+商品
-   Route::get('/category', [ProductApi::class, 'index'])->name('ProductIndex');
-   
-   //取得指定商品分類+商品
-   Route::get('/category/{categoryId}', [ProductApi::class, 'GetProductByCategory'])->name('GetProductByCategory');
+    //取得所有商品分類+商品
+    Route::get('/category', [ProductApi::class, 'index'])->name('ProductIndex');
 
-   //取得指定商品分類+商品
-   Route::get('/product/{productId}', [ProductApi::class, 'GetProduct'])->name('GetProduct');
+    //取得指定商品分類+商品
+    Route::get('/category/{categoryId}', [ProductApi::class, 'GetProductByCategory'])->name('GetProductByCategory');
 
-
+    //取得指定商品分類+商品
+    Route::get('/product/{productId}', [ProductApi::class, 'GetProduct'])->name('GetProduct');
 });
 
 Route::post('/uploadimage/{article_id}/{date}', [News::class, 'uploadimage'])->name('UploadArticleimage');
