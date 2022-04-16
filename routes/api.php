@@ -10,6 +10,7 @@ use App\Http\Controllers\ContactApi;
 use App\Http\Controllers\ProductApi;
 use App\Http\Controllers\UserApi;
 use App\Http\Controllers\CartApi;
+use App\Http\Controllers\CheckoutApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -123,6 +124,16 @@ Route::prefix('Cart')->group(function () {
     //刪除購物車內商品
     Route::post('/removecartproduct', [CartApi::class, 'RemoveCartProduct'])->name('RemoveCartProduct');
 });
+
+
+Route::prefix('Checkout')->group(function () {
+
+    //結帳
+    Route::post('/checkout', [CheckoutApi::class, 'CheckOut'])->name('CheckOut');
+
+
+});
+
 
 
 
