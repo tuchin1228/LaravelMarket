@@ -34,13 +34,14 @@ class CheckoutApi extends Controller
 
         $order['payStatus'] = 0;
         $order['remark'] = $req->remark;
+        $order['created_at'] = date('Y-m-d H:i:s', time());
 
 
         $cartProduct = $req->cartProduct;
         $cartProductAddition = $req->cartProductAddition;
 
 
-        $dbCart =  DB::select("SELECT * FROM user_cart AS A
+        $dbCart =  DB::select("SELECT *,A.productId AS product_id ,A.productAdditionId AS productAddition_id FROM user_cart AS A
                                 LEFT JOIN product AS B
                                 ON A.productId = B.productId
                                 LEFT JOIN product_detail AS C
@@ -63,9 +64,9 @@ class CheckoutApi extends Controller
 
             $temp = [];
             $temp['orderId'] =  $order['orderId'];
-            $temp['productId'] = $product->productId;
+            $temp['productId'] = $product->product_id;
             $temp['productDetailId'] = $product->productDetailId;
-            $temp['productAdditionId'] = $product->productAdditionId;
+            $temp['productAdditionId'] = $product->productAddition_id;
             $temp['count'] = $product->count;
             $temp['type'] = $product->type;
 
@@ -128,7 +129,7 @@ class CheckoutApi extends Controller
         //清除購物車
         DB::table('user_cart')->where('userId', $userId)->delete();
 
-        return ['success' => true, 'msg' => '訂單成立'];
+        return ['success' => true, 'msg' => '訂單成立','orderId'=> $order['orderId']];
     }
 
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductApi;
 use App\Http\Controllers\UserApi;
 use App\Http\Controllers\CartApi;
 use App\Http\Controllers\CheckoutApi;
+use App\Http\Controllers\OrderApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -130,10 +131,31 @@ Route::prefix('Checkout')->group(function () {
 
     //結帳
     Route::post('/checkout', [CheckoutApi::class, 'CheckOut'])->name('CheckOut');
-
+    
 
 });
 
+
+Route::prefix('Order')->group(function () {
+
+    //取得所有訂單
+    Route::post('/order', [OrderApi::class, 'order'])->name('GetOrder');
+
+    //取得訂單
+    Route::post('/{orderId}', [OrderApi::class, 'GetOrderDetail'])->name('GetOrderDetail');
+
+    
+    Route::post('/pay/ConfirmUrl', [OrderApi::class, 'ConfirmUrl'])->name('ConfirmUrl');
+    
+    //Linepay online api
+    Route::post('/pay/{orderId}', [OrderApi::class, 'pay'])->name('Pay');
+
+    //取消訂單
+    Route::post('/cancel/{orderId}', [OrderApi::class, 'CancelOrder'])->name('CancelOrder');
+
+
+    
+});
 
 
 

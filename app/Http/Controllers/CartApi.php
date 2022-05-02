@@ -125,7 +125,7 @@ class CartApi extends Controller
                                     ON A.productId = D.product_id
                                     WHERE A.type = 0
                                     AND A.userId = '$userId'
-                                    AND D.product_type = 'product'
+                                    AND (D.product_type = 'product' OR D.product_type IS NULL)
                                     GROUP BY A.productDetailId
                     ");
         $cartProductAddition =  DB::select("SELECT * FROM user_cart AS A

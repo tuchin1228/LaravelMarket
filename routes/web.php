@@ -28,6 +28,9 @@ Route::get('/backend', function () {
     return view('dashboard_layout');
 });
 
+
+
+
 // 輪播
 Route::prefix('Carousel')->group(function () {
 
