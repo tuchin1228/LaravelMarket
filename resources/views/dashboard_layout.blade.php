@@ -148,6 +148,15 @@
                     </a>
                 </li>
 
+                <li class="menu-label">訂單相關</li>
+                <li>
+                    <a href="{{route('GetAllOrder')}}">
+                        <div class="parent-icon"><i class='bx bx-cookie'></i>
+                        </div>
+                        <div class="menu-title">訂單管理</div>
+                    </a>
+                </li>
+
                 <li class="menu-label">聯絡相關</li>
                 <li>
                     <a href="{{ route('ContactCategory') }}">

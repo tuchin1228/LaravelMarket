@@ -5,6 +5,7 @@ use App\Http\Controllers\Carousel;
 use App\Http\Controllers\News;
 use App\Http\Controllers\Product;
 use App\Http\Controllers\User;
+use App\Http\Controllers\Order;
 use App\Http\Controllers\Contact;
 use Illuminate\Support\Facades\Route;
 
@@ -277,6 +278,20 @@ Route::prefix('Product')->group(function () {
 
     // //加購產品指定主檔
     // Route::post('/assignProduct', [Product::class, 'product_additional_assign'])->name('ProductAdditionalAssign');
+
+});
+
+
+
+// 訂單相關
+Route::prefix('Order')->group(function () { 
+
+    //取得所有訂單
+    Route::get('/', [Order::class, 'order'])->name('GetAllOrder');
+    
+    //取得所有訂單
+    Route::get('/detail/{orderId}', [Order::class, 'orderDetail'])->name('GetOrderDetail');
+
 
 });
 
