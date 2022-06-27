@@ -299,7 +299,7 @@ class Product extends Controller
                 'date' => now(),
             ]);
 
-            return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/product/$product_id/$type/$filename"];
+            return ['location' => request()->getSchemeAndHttpHost() . "/public/storage/product/$product_id/$type/$filename"];
         }
     }
 
