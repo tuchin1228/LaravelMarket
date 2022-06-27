@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Admin;
 
 use App\Http\Controllers\About;
 use App\Http\Controllers\Carousel;
@@ -24,16 +25,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// 後台
-Route::get('/backend', function () {
-    return view('dashboard_layout');
+
+
+// // 後台
+
+Route::prefix('backend')->group(function () {
+
+    Route::get('/', function () {
+        return view('dashboard_layout');
+    })->middleware('AuthCheck')->name('backend');
+    Route::get('/login', function () {
+        return view('Login');
+    })->name('AdminLoginView');
+    Route::post('/login',  [Admin::class, 'AdminLogin'])->name('AdminLogin');
 });
 
 
 
-
 // 輪播
-Route::prefix('Carousel')->group(function () {
+Route::prefix('Carousel')->middleware('AuthCheck')->group(function () {
 
     //顯示所有輪播
     Route::get('/', [Carousel::class, 'index'])->name('Carousel');
@@ -62,7 +72,7 @@ Route::prefix('Carousel')->group(function () {
 });
 
 // 關於
-Route::prefix('About')->group(function () {
+Route::prefix('About')->middleware('AuthCheck')->group(function () {
 
     //顯示所有關於
     Route::get('/', [About::class, 'index'])->name('About');
@@ -91,7 +101,7 @@ Route::prefix('About')->group(function () {
 });
 
 // 最新消息
-Route::prefix('News')->group(function () {
+Route::prefix('News')->middleware('AuthCheck')->group(function () {
 
     //顯示所有最新消息
     Route::get('/', [News::class, 'index'])->name('News');
@@ -138,7 +148,7 @@ Route::prefix('News')->group(function () {
 });
 
 // 會員
-Route::prefix('User')->group(function () {
+Route::prefix('User')->middleware('AuthCheck')->group(function () {
 
     //顯示所有會員
     Route::get('/', [User::class, 'index'])->name('User');
@@ -158,7 +168,7 @@ Route::prefix('User')->group(function () {
 });
 
 // 商品
-Route::prefix('Product')->group(function () {
+Route::prefix('Product')->middleware('AuthCheck')->group(function () {
 
     //顯示所有商品分類頁面
     Route::get('/category', [Product::class, 'product_category'])->name('ProductCategory');
@@ -284,7 +294,7 @@ Route::prefix('Product')->group(function () {
 
 
 // 訂單相關
-Route::prefix('Order')->group(function () { 
+Route::prefix('Order')->middleware('AuthCheck')->group(function () { 
 
     //取得所有訂單
     Route::get('/', [Order::class, 'order'])->name('GetAllOrder');
@@ -298,7 +308,7 @@ Route::prefix('Order')->group(function () {
 
 
 // 聯絡我們
-Route::prefix('Contact')->group(function () { 
+Route::prefix('Contact')->middleware('AuthCheck')->group(function () { 
 
     
     //顯示所有聯絡我們
