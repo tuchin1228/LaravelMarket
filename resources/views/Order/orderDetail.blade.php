@@ -81,7 +81,7 @@
             @foreach ($orderDetails as $orderDetail)
                 <div class="d-flex align-items-center my-2">
                     <div class="me-2" style="width:100px;">
-                        <img src="{{ $orderDetail->type == 0 ? '/ChocolateMarket/public/storage/product/' . $orderDetail->productId . '/product/' . $orderDetail->filename : '/ChocolateMarket/public/storage/additional_product/' . $orderDetail->productAdditionId . '/' . $orderDetail->filename }}"
+                        <img src="{{ $orderDetail->type == 0 ?   request()->getSchemeAndHttpHost() . '/storage/product/' . $orderDetail->productId . '/product/' . $orderDetail->filename :  request()->getSchemeAndHttpHost() . '/storage/additional_product/' . $orderDetail->productAdditionId . '/' . $orderDetail->filename }}"
                             alt="" class="w-100">
                     </div>
                     <div class="row flex-grow-1">

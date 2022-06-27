@@ -20,7 +20,7 @@
         @foreach ($notitle_images as $image)
         <div class="" style=" width: 95%;max-width:150px;margin:10px 15px;">
             <p class="text-center">{{$image->date}}</p>
-            <img style="width:100%;" src="../../public/storage/about/{{$image->about_id}}/{{$image->filename}}"
+            <img style="width:100%;" src="../../storage/about/{{$image->about_id}}/{{$image->filename}}"
                 alt="">
         </div>
         @endforeach
@@ -38,7 +38,7 @@
         @foreach ($hastitle_images as $image)
         <div class="" style="border-bottom:1px solid #d8d8d8;border-radius:5px;padding:10px;margin:10px 0;">
             <p>{{$image->title}} - {{$image->created_at}}</p>
-            <img style="max-width: 200px" src="../../public/storage/about/{{$image->about_id}}/{{$image->filename}}"
+            <img style="max-width: 200px" src="../../storage/about/{{$image->about_id}}/{{$image->filename}}"
                 alt="">
         </div>
         @endforeach
