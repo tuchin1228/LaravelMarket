@@ -27,6 +27,7 @@ class OrderApi extends Controller
                                     ON B.productId = E.product_id
                                     WHERE A.userId = '$userId'
                                     AND E.product_type ='product' 
+                                    OR E.product_type  IS NULL
                                     AND E.delete_at IS NULL
                                     AND B.type= 0
                                     GROUP BY A.orderId
