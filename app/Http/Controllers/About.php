@@ -36,7 +36,7 @@ class About extends Controller
                 'date' => now(),
             ]);
 
-            return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/about/$about_id/$filename"];
+            return ['location' => request()->getSchemeAndHttpHost() . "/storage/about/$about_id/$filename"];
         }
     }
 
