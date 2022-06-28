@@ -72,7 +72,7 @@ class News extends Controller
                 'date' => $date,
             ]);
 
-            return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/uploads/$article_id/$filename"];
+            return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/storage/uploads/$article_id/$filename"];
 
 
         }
