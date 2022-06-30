@@ -9,14 +9,14 @@ class User extends Controller
 {
     public function index()
     {
-        $data['Users'] = DB::table('User')
+        $data['Users'] = DB::table('user')
             ->orderBy('created_at', 'desc')->paginate(20);
         return view('User.User', $data);
     }
 
     public function edit_index($userId)
     {
-        $User = DB::table('User')
+        $User = DB::table('user')
             ->where('id', $userId)
             ->get();
         $data['User'] = $User[0];
