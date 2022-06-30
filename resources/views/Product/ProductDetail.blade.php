@@ -335,7 +335,7 @@
             @foreach ($productImages as $productImage)
             <div class="p-2 border rounded m-2" style="width: 300px;">
                 <img class="w-100"
-                    src="../../storage/product/{{$product->productId}}/product/{{$productImage->filename}}" alt="">
+                    src="../../public/storage/product/{{$product->productId}}/product/{{$productImage->filename}}" alt="">
                 <form action="{{route('DeleteProductImage')}}" method="post">
                     @csrf
                     <input type="text" hidden name="filename" value="{{$productImage->filename}}">
