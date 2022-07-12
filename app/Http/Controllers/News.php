@@ -74,7 +74,6 @@ class News extends Controller
 
             return ['location' => request()->getSchemeAndHttpHost() . "/" . env('PROJECT_NAME') . "/public/storage/uploads/$article_id/$filename"];
 
-
         }
     }
 
@@ -110,6 +109,7 @@ class News extends Controller
 
         $data['title'] = $req->title;
         $data['content'] = $req->content;
+        $data['cateId'] = $req->cateId;
 
         if ($req->hasFile('formFile')) {
 
@@ -124,6 +124,7 @@ class News extends Controller
                     'title' => $data['title'],
                     'content' => $data['content'],
                     'banner' => $data['banner'],
+                    'cateId' => $data['cateId']
                 ]);
 
             return redirect()->route('News');
@@ -133,6 +134,7 @@ class News extends Controller
                 ->update([
                     'title' => $data['title'],
                     'content' => $data['content'],
+                    'cateId' => $data['cateId']
                 ]);
 
             return redirect()->route('News');
