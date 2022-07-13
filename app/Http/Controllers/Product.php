@@ -366,6 +366,7 @@ class Product extends Controller
                               LEFT JOIN product
                               ON image_list.product_id = product.productId
                               WHERE image_list.product_id IS NOT NULL
+                              AND image_list.product_type != 'product'
 							  AND (product.description NOT LIKE CONCAT('%', image_list.filename, '%') OR product.description IS NULL)
                               AND (product.composition NOT LIKE CONCAT('%', image_list.filename, '%') OR product.composition IS NULL)
                               AND (product.buyflow NOT LIKE CONCAT('%', image_list.filename, '%') OR product.buyflow IS NULL)");
